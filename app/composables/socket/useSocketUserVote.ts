@@ -1,8 +1,3 @@
-import type {User} from "~/shared/types/user";
-import {type EndVoteMessage, SocketMessage, type VoteMessage} from "~/shared/types/message";
-import {socket} from "~/utils/socket";
-import type {Card} from "~/shared/types/card";
-
 export const useSocketUserVote = (room: Ref<string>, user: Ref<User>) => {
   /**
    * голосуем
@@ -29,9 +24,7 @@ export const useSocketUserVote = (room: Ref<string>, user: Ref<User>) => {
    *  сбрасываем голосование
    */
   const resetVote = () => {
-    socket.emit(SocketMessage.resetVote, ({
-      room: room.value,
-    }))
+    socket.emit(SocketMessage.resetVote)
   }
 
   /**
@@ -55,16 +48,11 @@ export const useSocketUserVote = (room: Ref<string>, user: Ref<User>) => {
 
   /**
    * триггерится на событии завершения голосвания и открытия модалки
-   * @param endVoteHandler
    * @param loaderHandler - метод для всех остальных
    */
-  const onEndVote = (endVoteHandler: () => void, loaderHandler: () => void) => {
+  const onEndVote = (loaderHandler: () => void) => {
     socket.on(SocketMessage.endVote, (data: EndVoteMessage) => {
-      if (data.user.id === user.value.id) {
-        endVoteHandler()
-      } else {
-        loaderHandler()
-      }
+      loaderHandler()
     })
   }
 

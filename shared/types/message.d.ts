@@ -1,17 +1,3 @@
-import type {User} from "~/shared/types/user";
-import type {Card} from "~/shared/types/card";
-
-export enum SocketMessage {
-  connection = 'connection',
-  connectUser = 'connectUser',
-  disconnectUser = 'disconnectUser',
-  userPing = 'userPing',
-  vote = 'vote',
-  resetVote = 'resetVote',
-  endVote = 'endVote',
-  endGame = 'endGame'
-}
-
 export type VoteMessage = {
   room: string
   user: User

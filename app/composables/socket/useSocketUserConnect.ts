@@ -1,7 +1,3 @@
-import type {User, UserMessage} from "~/shared/types/user";
-import {socket} from "~/utils/socket";
-import {SocketMessage} from "~/shared/types/message";
-
 export const useSocketUserConnect = (room: Ref<string>, user: Ref<User>) => {
   const message = computed(() => ({
     room: room.value,
@@ -14,17 +10,6 @@ export const useSocketUserConnect = (room: Ref<string>, user: Ref<User>) => {
    */
   const onRoomConnect = () => {
     socket.emit(SocketMessage.connection, message.value)
-  }
-
-  /**
-   * если зашел новый юзер и это не мы, отправляем всем себя
-   */
-  const onUserConnect = () => {
-    socket.on(SocketMessage.connectUser, ({user: userFromSocket}: UserMessage) => {
-      if (userFromSocket.id !== user.value.id) {
-        socket.emit(SocketMessage.userPing, message.value);
-      }
-    })
   }
 
   /**
@@ -50,16 +35,13 @@ export const useSocketUserConnect = (room: Ref<string>, user: Ref<User>) => {
    *   метод получения пользователя в команте, который не мы
    */
   const onUserPing = (handler: (user: User) => void) => {
-    socket.on(SocketMessage.userPing, ({user: userFromSocket}: UserMessage) => {
-      if (userFromSocket.id !== user.value.id) {
-        handler(userFromSocket)
-      }
+    socket.on(SocketMessage.connectUser, ({user: userFromSocket}: UserMessage) => {
+      handler(userFromSocket)
     })
   }
 
   return {
     onRoomConnect,
-    onUserConnect,
     disconnect,
     onUserDisconnect,
     onUserPing

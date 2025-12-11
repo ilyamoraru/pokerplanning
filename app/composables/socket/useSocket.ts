@@ -1,5 +1,3 @@
-import {socket} from "~/utils/socket";
-
 export const useSocket = () => {
   const isConnected = ref(false);
   const transport = ref("N/A");
