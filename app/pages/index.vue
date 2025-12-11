@@ -1,3 +1,5 @@
 <template>
-  <Connection room="A-234"/>
+  <section>
+
+  </section>
 </template>
