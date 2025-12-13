@@ -1,3 +1,5 @@
 <template>
-  <section>this is main page</section>
+  <div></div>
 </template>
+
+<script lang="ts" setup></script>

@@ -1,4 +1,4 @@
-import { CardType, CardState } from '../utils/card'
+import type { CardType, CardState } from '../utils/card'
 
 export type Card = {
   type: CardType

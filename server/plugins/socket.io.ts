@@ -1,6 +1,7 @@
 import type { NitroApp } from 'nitropack'
 import { Server as Engine } from 'engine.io'
-import { Server, Socket } from 'socket.io'
+import type { Socket } from 'socket.io'
+import { Server } from 'socket.io'
 import { defineEventHandler } from 'h3'
 
 export default defineNitroPlugin((nitroApp: NitroApp) => {

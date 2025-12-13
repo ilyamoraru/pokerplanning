@@ -3,26 +3,24 @@ export const useApi = () => {
    * получаем пользователя
    * @return Promise<User>
    */
-  const getUser = () => {
-    //GET /secured/user
+  const fetchUser = () => {
+    return useFetch<User>('/api/secured/user')
   }
 
   /**
    * получаем список доступных к оценке тасок
    * @return Promise<Task>
    */
-  const getAllTasksList = async () => {
-    //GET /secured/tasks
-    //: Promise<Task[]>
+  const fetchAllTasksList = async () => {
+    return useFetch<Task[]>('/api/secured/tasks')
   }
 
   /**
    * получаем список референсных тасок
    * @return Promise<Task>
    */
-  const getReferenceTasks = async () => {
-    //GET /secured/tasks/reference
-    //: Promise<Task[]>
+  const fetchReferenceTasks = async () => {
+    return useFetch<Task[]>('/api/secured/tasks/reference')
   }
 
   /**
@@ -53,5 +51,11 @@ export const useApi = () => {
    */
   const getSprintsList = async () => {
     //GET /secured/sprints
+  }
+
+  return {
+    fetchUser,
+    fetchAllTasksList,
+    fetchReferenceTasks
   }
 }
