@@ -16,7 +16,7 @@ export const useSocketUserVote = (room: Ref<string>, user: Ref<User>) => {
    */
   const onUserVote = (handler: (message: VoteMessage) => void) => {
     socket.on(SocketMessage.vote, (message: VoteMessage) => {
-      handler(message);
+      handler(message)
     })
   }
 
@@ -40,10 +40,10 @@ export const useSocketUserVote = (room: Ref<string>, user: Ref<User>) => {
    * метод запускает открытие модалки с завершение голосования
    */
   const endVote = () => {
-    socket.emit(SocketMessage.endVote, ({
+    socket.emit(SocketMessage.endVote, {
       room: room.value,
       user: user.value
-    }) as EndVoteMessage)
+    } as EndVoteMessage)
   }
 
   /**

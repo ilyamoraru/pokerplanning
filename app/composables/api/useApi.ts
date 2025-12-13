@@ -38,7 +38,11 @@ export const useApi = () => {
    * оценка таски в текущий спринт
    * @param task
    */
-  const estimateTask = async (taskId: Task['id'], sprintId: Sprint['id'], isReference?: boolean) => {
+  const estimateTask = async (
+    taskId: Task['id'],
+    sprintId: Sprint['id'],
+    isReference?: boolean
+  ) => {
     //PUT /secured/tasks/estimate
     // body: {taskId, sprintId, isReference}
   }

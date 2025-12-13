@@ -1,5 +1,3 @@
 <template>
-  <div>
-    this is auth
-  </div>
+  <div>this is auth</div>
 </template>

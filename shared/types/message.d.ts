@@ -27,4 +27,3 @@ export type EndVoteMessage = {
 }
 
 export type EndGameMessage = string
-

@@ -6,5 +6,5 @@ export enum CardState {
 
 export enum CardType {
   numeric = 'numeric',
-  state = 'state',
+  state = 'state'
 }

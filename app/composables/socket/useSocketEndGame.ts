@@ -1,5 +1,5 @@
 export const useSocketEndGame = (room: Ref<string>) => {
-  const {disconnectSocket} = useSocket()
+  const { disconnectSocket } = useSocket()
   const router = useRouter()
 
   /**
@@ -15,7 +15,7 @@ export const useSocketEndGame = (room: Ref<string>) => {
   const onEndGame = () => {
     socket.on(SocketMessage.endGame, (data: EndVoteMessage) => {
       disconnectSocket()
-      router.push("/")
+      router.push('/')
     })
   }
 

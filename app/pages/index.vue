@@ -1,5 +1,3 @@
 <template>
-  <section>
-    this is main page
-  </section>
+  <section>this is main page</section>
 </template>
