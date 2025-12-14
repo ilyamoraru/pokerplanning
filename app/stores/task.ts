@@ -7,7 +7,9 @@ export const useTaskStore = defineStore('task', () => {
     loadingReferenceTasks.value = true
     const { data } = await fetchReferenceTasks()
 
-    data.value && (referenceTasksList.value = data.value)
+    if (data.value) {
+      referenceTasksList.value = data.value
+    }
     loadingReferenceTasks.value = false
   }
   return {
