@@ -8,8 +8,13 @@ export const taskMock: Task = {
   estimation: 1
 }
 
-export const tasksListMock: Task[] = Array(10).fill({
-  ...taskMock,
-  id: Math.random(),
-  title: `${taskMock.title}${Math.random()}`
-})
+export const tasksListMock: Task[] = Array(10)
+  .fill(taskMock)
+  .map((item, index) => {
+    return {
+      ...item,
+      id: index.toString(),
+      title: `${taskMock.title}${Math.random()}`,
+      estimation: Math.round(Math.random() * 10)
+    }
+  })
