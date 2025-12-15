@@ -3,7 +3,7 @@ import { useApi } from '~/composables'
 export const useUserStore = defineStore('user', () => {
   const { fetchUser } = useApi()
 
-  const user = ref<User | null>(null)
+  const user = ref<User | undefined>(undefined)
 
   const getUser = async () => {
     const { data } = await fetchUser()
