@@ -2,7 +2,7 @@
   <main>
     <section class="py-10">
       <UiTitle severity="h1">Задачи для оценки</UiTitle>
-      <TaskEstimateTable :value="tasksToEstimate" v-if="tasksToEstimate" />
+      <TaskEstimateTable v-if="tasksToEstimate" :value="tasksToEstimate" />
     </section>
   </main>
 </template>

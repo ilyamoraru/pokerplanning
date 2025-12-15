@@ -8,7 +8,9 @@ export const useUserStore = defineStore('user', () => {
   const getUser = async () => {
     const { data } = await fetchUser()
 
-    data.value && (user.value = data.value)
+    if (data.value) {
+      user.value = data.value
+    }
   }
 
   return {
