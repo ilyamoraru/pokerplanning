@@ -5,7 +5,7 @@ export const useTaskStore = defineStore('task', () => {
   const referenceTasks = computed(() => {
     if (!referenceTasksList.value) return
 
-    return referenceTasksList.value.reduce(
+    const tasks = referenceTasksList.value.reduce(
       (acc, item) => {
         const { estimation } = item
         if (!acc.has(estimation)) {
@@ -21,6 +21,8 @@ export const useTaskStore = defineStore('task', () => {
       },
       new Map() as Map<number, Task[]>
     )
+
+    return new Map([...tasks.entries()].sort(([aNumber], [bNumber]) => aNumber - bNumber))
   })
 
   const getReferenceTasks = async () => {
