@@ -19,10 +19,10 @@ const props = withDefaults(defineProps<PropType>(), {
 })
 
 const classesSeverityMap: Record<NonNullable<PropType['severity']>, string> = {
-  h1: 'text-[48px] font-medium  leading-[120%]',
-  h2: 'text-3xl font-semibold leading-7',
-  h3: 'text-[22px] font-semibold leading-[120%]',
-  h4: 'text-xl font-medium leading-[22px]',
+  h1: 'text-3xl font-medium  leading-[120%]',
+  h2: 'text-2xl font-semibold leading-7',
+  h3: 'text-xl font-semibold leading-[120%]',
+  h4: 'text-lg font-medium leading-[22px]',
   h5: 'text-base font-medium leading-5',
   h6: 'text-sm font-medium leading-5'
 }

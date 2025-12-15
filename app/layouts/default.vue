@@ -1,3 +1,4 @@
+<script setup lang="ts"></script>
 <template>
   <UContainer>
     <UHeader>
@@ -12,6 +13,8 @@
         <UserMenu />
       </template>
     </UHeader>
-    <slot />
+    <UContainer>
+      <slot />
+    </UContainer>
   </UContainer>
 </template>

@@ -1,5 +1,5 @@
 export const useTaskStore = defineStore('task', () => {
-  const { fetchReferenceTasks } = useApi()
+  const { fetchReferenceTasks, fetchAllTasksList } = useApi()
   const referenceTasksList = ref<Task[] | undefined>(undefined)
   const loadingReferenceTasks = ref(false)
   const referenceTasks = computed(() => {
@@ -34,10 +34,23 @@ export const useTaskStore = defineStore('task', () => {
     }
     loadingReferenceTasks.value = false
   }
+
+  //tasks to estimate
+  const tasksToEstimate = ref<Task[] | undefined>(undefined)
+  const getTasksToEstimate = async () => {
+    const { data } = await fetchAllTasksList()
+
+    if (data.value) {
+      tasksToEstimate.value = data.value
+    }
+  }
+
   return {
     referenceTasksList,
     loadingReferenceTasks,
     getReferenceTasks,
-    referenceTasks
+    referenceTasks,
+    getTasksToEstimate,
+    tasksToEstimate
   }
 })
