@@ -4,7 +4,7 @@
       <template #left>
         <NuxtLink to="/" class="flex items-center gap-2">
           <Icon name="mdi:account-card-outline" size="20" />
-          <h1 class="text-xl">Poher Poker</h1>
+          <UiTitle severity="h3" tag="h1">Poher Poker</UiTitle>
         </NuxtLink>
       </template>
       <template #right>
