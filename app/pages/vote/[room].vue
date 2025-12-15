@@ -4,7 +4,8 @@
 
 <script lang="ts" setup>
 definePageMeta({
-  layout: 'vote'
+  layout: 'vote',
+  middleware: ['task']
 })
 
 const { params } = useRoute()
