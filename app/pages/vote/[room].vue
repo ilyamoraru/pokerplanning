@@ -1,13 +1,15 @@
 <template>
   <ClientOnly>
-    <UContainer
-      v-if="!isConnected"
-      class="absolute size-full top-0 left-0 flex flex-col justify-center"
-    >
-      <UiTitle severity="h2" class="text-center mb-2">Подключаемся к комнате...</UiTitle>
-      <UProgress :model-value="null" />
-    </UContainer>
-    {{ isConnected }}
+    <UMain>
+      <UContainer
+        v-if="!isConnected || !user"
+        class="absolute size-full top-0 left-1/2 -translate-x-1/2 flex mx-auto flex-col justify-center"
+      >
+        <UiTitle severity="h2" class="text-center mb-2">Подключаемся к комнате...</UiTitle>
+        <UProgress :model-value="null" />
+      </UContainer>
+      <Room v-else :user :room="route.params.room as string" />
+    </UMain>
   </ClientOnly>
 </template>
 
@@ -19,9 +21,12 @@ definePageMeta({
 const { user } = storeToRefs(useUserStore())
 const route = useRoute()
 
-const { onRoomConnect } = useSocketUserConnect(route.params.room as string, user.value!)
-const { isConnected, connectSocket, disconnectSocket } = useSocket(onRoomConnect)
+const { isConnected, connectSocket, disconnectSocket } = useSocket()
 
-onMounted(connectSocket)
-onBeforeRouteLeave(disconnectSocket)
+onMounted(() => {
+  connectSocket()
+})
+onBeforeRouteLeave(() => {
+  disconnectSocket()
+})
 </script>

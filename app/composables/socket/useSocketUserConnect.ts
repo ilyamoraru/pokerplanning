@@ -10,14 +10,14 @@ export const useSocketUserConnect = (room: string, user: User) => {
   /**
    *   событие подключения к комнате
    */
-  const onRoomConnect = () => {
+  const connectRoom = () => {
     $socket.emit(SocketMessage.connection, message.value)
   }
 
   /**
    * отключаемся
    */
-  const disconnect = () => {
+  const disconnectRoom = () => {
     $socket.emit(SocketMessage.connection, {
       ...message.value,
       type: 'disconnect'
@@ -36,16 +36,22 @@ export const useSocketUserConnect = (room: string, user: User) => {
   /**
    *   метод получения пользователя в команте, который не мы
    */
-  const onUserPing = (handler: (user: User) => void) => {
+  const onUserConnect = (handler: (user: User) => void) => {
     $socket.on(SocketMessage.connectUser, ({ user: userFromSocket }: UserMessage) => {
       handler(userFromSocket)
+      $socket.emit(SocketMessage.pingUser, { user: userFromSocket, room } as UserMessage)
     })
   }
 
+  const onUserPing = (handler: (user: User) => void) => {
+    $socket.on(SocketMessage.pingUser, ({ user }: UserMessage) => handler(user))
+  }
+
   return {
-    onRoomConnect,
-    disconnect,
+    connectRoom,
+    disconnectRoom,
     onUserDisconnect,
+    onUserConnect,
     onUserPing
   }
 }

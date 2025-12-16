@@ -7,4 +7,5 @@ export type User = {
 
 export type UserMessage = {
   user: User
+  room: string
 }

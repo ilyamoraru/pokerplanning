@@ -1,4 +1,4 @@
-export const useSocket = (onConnectionHandler?: () => void) => {
+export const useSocket = () => {
   const { $socket } = useNuxtApp()
   const isConnected = ref(false)
 
@@ -11,12 +11,13 @@ export const useSocket = (onConnectionHandler?: () => void) => {
     isConnected.value = false
   }
 
-  if ($socket.connected) {
-    onConnect()
-  }
-
   const connectSocket = () => {
     if (import.meta.server) return
+
+    if ($socket.connected) {
+      onConnect()
+    }
+
     $socket.on('connect', onConnect)
     $socket.on('disconnect', onDisconnect)
   }
@@ -24,18 +25,6 @@ export const useSocket = (onConnectionHandler?: () => void) => {
     $socket.off('connect', onConnect)
     $socket.off('disconnect', onDisconnect)
   }
-
-  watch(
-    () => isConnected.value,
-    (val) => {
-      if (val && onConnectionHandler) {
-        onConnectionHandler()
-      }
-    },
-    {
-      once: true
-    }
-  )
 
   return {
     isConnected,
