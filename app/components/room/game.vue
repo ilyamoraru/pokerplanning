@@ -4,44 +4,61 @@
       <div />
       <div class="table-module_top">
         <ul class="flex gap-2 justify-center">
-          <li v-for="user in userFields[0]" :key="user.id">
-            <UserGamerCard :value="user" />
+          <li v-for="userTop in userFields[0]" :key="userTop.id">
+            <UserGamerCard :value="userTop" :game-is-done />
           </li>
         </ul>
       </div>
       <div />
       <div class="table-module_left py-[160px]">
         <ul class="flex flex-col h-full gap-2 justify-center items-center">
-          <li v-for="user in userFields[2]" :key="user.id">
-            <UserGamerCard :value="user" />
+          <li v-for="userLeft in userFields[2]" :key="userLeft.id">
+            <UserGamerCard :value="userLeft" :game-is-done />
           </li>
         </ul>
       </div>
-      <RoomField class="table-module_table" :gamers="users" />
+      <RoomField
+        class="table-module_table"
+        :gamers="users"
+        :game-is-done
+        @reveal-cards="revealCards"
+        @reset="resetGame"
+      />
       <div class="table-module_right py-[160px]">
         <ul class="flex flex-col gap-2 h-full justify-center">
-          <li v-for="user in userFields[3]" :key="user.id">
-            <UserGamerCard :value="user" />
+          <li v-for="userRight in userFields[3]" :key="userRight.id">
+            <UserGamerCard :value="userRight" :game-is-done />
           </li>
         </ul>
       </div>
       <div />
       <div class="table-module_bottom">
         <ul class="flex gap-2 justify-center">
-          <li v-for="user in userFields[1]" :key="user.id">
-            <UserGamerCard :value="user" />
+          <li v-for="userBottom in userFields[1]" :key="userBottom.id">
+            <UserGamerCard :value="userBottom" :game-is-done />
           </li>
         </ul>
       </div>
       <div />
     </div>
+    <CardDesk
+      class="fixed bottom-4 left-0 left-1/2 -translate-x-1/2 bg-white p-4"
+      :user-vote="user?.card"
+      @vote="onUserVote"
+    />
   </div>
 </template>
 
 <script lang="ts" setup>
 const props = defineProps<{
   users: Gamer[]
+  user: Gamer
 }>()
+const emit = defineEmits<{
+  (e: 'vote', card?: Card): void
+}>()
+
+const gameIsDone = ref(false)
 
 const maxUsersOnDirection = 4
 const userFields = computed(() => {
@@ -64,6 +81,17 @@ const userFields = computed(() => {
     [[], [], [], []] as [User[], User[], User[], User[]]
   )
 })
+
+const revealCards = () => {
+  gameIsDone.value = true
+}
+const resetGame = () => {
+  gameIsDone.value = false
+}
+
+const onUserVote = (card?: Card) => {
+  emit('vote', card)
+}
 </script>
 
 <style scoped>

@@ -1,6 +1,6 @@
 <template>
   <section class="min-h-[calc(100vh-var(--ui-header-height))]">
-    <RoomGame :users="roomGamers" />
+    <RoomGame :users="roomGamers" :user="roomGamers[0]!" @vote="onUserVote" />
   </section>
 </template>
 
@@ -30,6 +30,10 @@ const removeUserFromRoom = (user: User) => {
   const index = getUserIndex(user)
 
   roomGamers.value.splice(index, 1)
+}
+
+const onUserVote = (card?: Card) => {
+  roomGamers.value[0]!.card = card
 }
 
 onMounted(() => {
