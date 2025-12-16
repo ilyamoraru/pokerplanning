@@ -1,6 +1,6 @@
 <template>
   <section class="min-h-[calc(100vh-var(--ui-header-height))]">
-    <RoomField :users="roomUsers" />
+    <RoomGame :users="roomGamers" />
   </section>
 </template>
 
@@ -12,24 +12,24 @@ const props = defineProps<{
 
 const { connectRoom, disconnectRoom, onUserConnect, onUserDisconnect, onUserPing } =
   useSocketUserConnect(props.room, props.user)
-const roomUsers = ref<User[]>([props.user])
+const roomGamers = ref<Gamer[]>([UserToGamer(props.user)])
 
 const getUserIndex = (user: User) => {
-  return roomUsers.value.findIndex((item) => item.id === user.id)
+  return roomGamers.value.findIndex((item) => item.id === user.id)
 }
 const addUserInRoom = (user: User) => {
   const index = getUserIndex(user)
-  console.log(index)
+
   if (index >= 1) return
 
-  roomUsers.value.push(user)
+  roomGamers.value.push(UserToGamer(user))
 }
 const removeUserFromRoom = (user: User) => {
   if (user.id === props.user.id) return
 
   const index = getUserIndex(user)
 
-  roomUsers.value.splice(index, 1)
+  roomGamers.value.splice(index, 1)
 }
 
 onMounted(() => {
