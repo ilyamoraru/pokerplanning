@@ -1,6 +1,6 @@
 <template>
   <ClientOnly>
-    <UMain>
+    <UMain class="py-10">
       <UContainer
         v-if="!isConnected || !user"
         class="absolute size-full top-0 left-1/2 -translate-x-1/2 flex mx-auto flex-col justify-center"
