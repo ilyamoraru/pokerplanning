@@ -4,7 +4,7 @@ export const useUserStore = defineStore('user', () => {
   const { fetchUser } = useApi()
   const { getToken, removeToken } = useToken()
 
-  const user = ref<User | null>(null)
+  const user = ref<User | undefined>(undefined)
 
   const getUser = async () => {
     const { data, error } = await fetchUser()

@@ -23,9 +23,7 @@ export default defineNitroPlugin((nitroApp: NitroApp) => {
             //подключаем юзера к комнате
             socket.join(room)
             //сообщаем всем, что пришел новый юзер
-            socket.broadcast.emit(SocketMessage.connectUser, { user } as UserMessage)
-
-            // io.to(room).emit(SocketMessage.connectUser, {user} as UserMessage)
+            socket.broadcast.to(room).emit(SocketMessage.connectUser, { user } as UserMessage)
           }
           break
         case 'disconnect':
@@ -33,7 +31,7 @@ export default defineNitroPlugin((nitroApp: NitroApp) => {
             // отключаем юзера из команты
             socket.leave(room)
             //говорим всем, что юзеры ушли
-            socket.broadcast.emit(SocketMessage.disconnectUser, { user } as UserMessage)
+            socket.broadcast.to(room).emit(SocketMessage.disconnectUser, { user } as UserMessage)
             const roomSize = getRoomSize(room)
 
             console.log('client leave. room size: ', roomSize)
@@ -41,24 +39,28 @@ export default defineNitroPlugin((nitroApp: NitroApp) => {
           break
       }
     })
+
+    socket.on(SocketMessage.pingUser, ({ user, room }: UserMessage) => {
+      socket.broadcast.to(room).emit(SocketMessage.pingUser, { user } as UserMessage)
+    })
   }
 
   const userVoteEvent = (socket: Socket) => {
     socket.on(SocketMessage.vote, (data: VoteMessage) => {
-      socket.broadcast.emit(SocketMessage.vote, data as VoteMessage)
+      socket.broadcast.to(data.room).emit(SocketMessage.vote, data as VoteMessage)
     })
   }
 
   const resetVoteEvent = (socket: Socket) => {
-    socket.on(SocketMessage.resetVote, () => {
-      socket.broadcast.emit(SocketMessage.resetVote)
+    socket.on(SocketMessage.resetVote, (room: string) => {
+      socket.broadcast.to(room).emit(SocketMessage.resetVote)
     })
   }
 
   const endVoteMessage = (socket: Socket) => {
     socket.on(SocketMessage.endVote, (data: EndVoteMessage) => {
       const { room, user } = data
-      socket.broadcast.emit(SocketMessage.endVote, { user } as UserPingMessage)
+      socket.broadcast.to(room).emit(SocketMessage.endVote, { user } as UserPingMessage)
     })
   }
 

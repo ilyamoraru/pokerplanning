@@ -10,17 +10,20 @@ defineProps<{
 }>()
 
 const iconComponent = resolveComponent('Icon')
+const linkComponent = resolveComponent('NuxtLink')
 const tableColumns: TableColumn<Task>[] = [
   {
     accessorKey: 'id',
     header: 'Задача',
-    cell: ({ row }) => row.getValue('id'),
+    cell: ({ row }) =>
+      h(linkComponent, { to: `/vote/${row.getValue('id')}` }, () => row.getValue('id')),
     meta: { class: { td: 'cursor-pointer' } }
   },
   {
     accessorKey: 'title',
     header: 'Название',
-    cell: ({ row }) => row.getValue('title'),
+    cell: ({ row }) =>
+      h(linkComponent, { to: `/vote/${row.getValue('id')}` }, () => row.getValue('title')),
     meta: { class: { td: 'cursor-pointer' } }
   },
   {

@@ -1,10 +1,12 @@
 export const useSocketUserVote = (room: Ref<string>, user: Ref<User>) => {
+  const { $socket } = useNuxtApp()
+
   /**
    * голосуем
    * @param card
    */
   const vote = (card: Card) => {
-    socket.emit(SocketMessage.vote, {
+    $socket.emit(SocketMessage.vote, {
       user: user.value,
       room: room.value,
       card
@@ -15,7 +17,7 @@ export const useSocketUserVote = (room: Ref<string>, user: Ref<User>) => {
    *  кто то проголосовал
    */
   const onUserVote = (handler: (message: VoteMessage) => void) => {
-    socket.on(SocketMessage.vote, (message: VoteMessage) => {
+    $socket.on(SocketMessage.vote, (message: VoteMessage) => {
       handler(message)
     })
   }
@@ -24,14 +26,14 @@ export const useSocketUserVote = (room: Ref<string>, user: Ref<User>) => {
    *  сбрасываем голосование
    */
   const resetVote = () => {
-    socket.emit(SocketMessage.resetVote)
+    $socket.emit(SocketMessage.resetVote)
   }
 
   /**
    *  сбросили голосование
    */
   const onResetVote = (handler: () => void) => {
-    socket.on(SocketMessage.resetVote, () => {
+    $socket.on(SocketMessage.resetVote, () => {
       handler()
     })
   }
@@ -40,7 +42,7 @@ export const useSocketUserVote = (room: Ref<string>, user: Ref<User>) => {
    * метод запускает открытие модалки с завершение голосования
    */
   const endVote = () => {
-    socket.emit(SocketMessage.endVote, {
+    $socket.emit(SocketMessage.endVote, {
       room: room.value,
       user: user.value
     } as EndVoteMessage)
@@ -51,7 +53,7 @@ export const useSocketUserVote = (room: Ref<string>, user: Ref<User>) => {
    * @param loaderHandler - метод для всех остальных
    */
   const onEndVote = (loaderHandler: () => void) => {
-    socket.on(SocketMessage.endVote, (data: EndVoteMessage) => {
+    $socket.on(SocketMessage.endVote, () => {
       loaderHandler()
     })
   }

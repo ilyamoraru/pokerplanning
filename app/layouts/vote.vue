@@ -1,6 +1,6 @@
 <template>
   <UContainer>
-    <UiHeader />
+    <UiHeader sidebar />
     <UContainer>
       <slot />
     </UContainer>
