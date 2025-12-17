@@ -2,8 +2,7 @@ export const useApi = () => {
   const apiBaseUrl = import.meta.env.VITE_API_BASE_URL
 
   /**
-   * Обменять OAuth code на токен и данные пользователя
-   * Этот запрос идет на ВНЕШНИЙ API (VITE_API_BASE_URL)
+   * запрос идет на ВНЕШНИЙ API (VITE_API_BASE_URL)
    * @param code - OAuth code из YouTrack redirect
    * @return Promise<User> - { id, token, name, avatar }
    */
@@ -20,65 +19,57 @@ export const useApi = () => {
   }
 
   /**
-   * Получаем данные текущего пользователя
-   * Запрос идет на ЛОКАЛЬНЫЙ API (/api/secured/user)
+   * получаем пользователя
    * @return Promise<User>
    */
-  const fetchUser = () => {
+  const fetchUser = async () => {
     return useFetch<User>('/api/secured/user')
   }
 
   /**
-   * Получаем список доступных к оценке задач
-   * Запрос идет на ЛОКАЛЬНЫЙ API (/api/secured/tasks)
-   * @return Promise<Task[]>
+   * получаем список доступных к оценке тасок
+   * @return Promise<Task>
    */
-  const fetchAllTasksList = () => {
+  const fetchAllTasksList = async () => {
     return useFetch<Task[]>('/api/secured/tasks')
   }
 
   /**
-   * Получаем список референсных задач
-   * Запрос идет на ЛОКАЛЬНЫЙ API (/api/secured/tasks/reference)
-   * @return Promise<Task[]>
+   * получаем список референсных тасок
+   * @return Promise<Task>
    */
-  const fetchReferenceTasks = () => {
+  const fetchReferenceTasks = async () => {
     return useFetch<Task[]>('/api/secured/tasks/reference')
   }
 
   /**
-   * Вернуть задачу в аналитику
-   * Запрос идет на ЛОКАЛЬНЫЙ API
-   * @param taskId - ID задачи
+   * возвращаем в аналитику
+   * @param task
    */
   const putTaskToAnalytics = async (taskId: Task['id']) => {
-    // PUT /api/secured/tasks/return
+    // PUT /secured/tasks/return
     // body: {taskId}
   }
 
   /**
-   * Оценить задачу в текущий спринт
-   * Запрос идет на ЛОКАЛЬНЫЙ API
-   * @param taskId - ID задачи
-   * @param sprintId - ID спринта
-   * @param isReference - Является ли референсной
+   * оценка таски в текущий спринт
+   * @param task
    */
   const estimateTask = async (
     taskId: Task['id'],
     sprintId: Sprint['id'],
     isReference?: boolean
   ) => {
-    // PUT /api/secured/tasks/estimate
+    // PUT /secured/tasks/estimate
     // body: {taskId, sprintId, isReference}
   }
 
   /**
-   * Получаем список спринтов
-   * Запрос идет на ЛОКАЛЬНЫЙ API
-   * @return Promise<Sprint[]>
+   * получаем список спринтов
+   * @return Promise<Sprint>
    */
   const getSprintsList = async () => {
-    // GET /api/secured/sprints
+    // GET /secured/sprints
   }
 
   return {
