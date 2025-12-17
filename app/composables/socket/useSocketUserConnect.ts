@@ -1,25 +1,27 @@
-export const useSocketUserConnect = (room: string, user: User) => {
+import type { GamerMessage } from '#shared/types/user'
+
+export const useSocketUserConnect = (room: string) => {
   const { $socket } = useNuxtApp()
 
-  const message = computed(() => ({
+  const message = (currentGamer: Gamer): ConnectionMessage => ({
     room,
-    user,
+    gamer: currentGamer,
     type: 'connect'
-  }))
+  })
 
   /**
    *   событие подключения к комнате
    */
-  const connectRoom = () => {
-    $socket.emit(SocketMessage.connection, message.value)
+  const connectRoom = (currentGamer: Gamer) => {
+    $socket.emit(SocketMessage.connection, message(currentGamer))
   }
 
   /**
    * отключаемся
    */
-  const disconnectRoom = () => {
+  const disconnectRoom = (currentGamer: Gamer) => {
     $socket.emit(SocketMessage.connection, {
-      ...message.value,
+      ...message(currentGamer),
       type: 'disconnect'
     })
   }
@@ -27,24 +29,24 @@ export const useSocketUserConnect = (room: string, user: User) => {
   /**
    *   если юзер покинул игру
    */
-  const onUserDisconnect = (handler: (user: User) => void) => {
-    $socket.on(SocketMessage.disconnectUser, ({ user }: UserMessage) => {
-      handler(user)
+  const onUserDisconnect = (handler: (gamer: Gamer) => void) => {
+    $socket.on(SocketMessage.disconnectUser, ({ gamer }: GamerMessage) => {
+      handler(gamer)
     })
   }
 
   /**
    *   метод получения пользователя в команте, который не мы
    */
-  const onUserConnect = (handler: (user: User) => void) => {
-    $socket.on(SocketMessage.connectUser, ({ user: userFromSocket }: UserMessage) => {
-      handler(userFromSocket)
-      $socket.emit(SocketMessage.pingUser, { user: userFromSocket, room } as UserMessage)
+  const onUserConnect = (currentGamer: Gamer, handler: (gamer: Gamer) => void) => {
+    $socket.on(SocketMessage.connectUser, ({ gamer }: GamerMessage) => {
+      handler(gamer)
+      $socket.emit(SocketMessage.pingUser, { gamer: currentGamer, room } as GamerMessage)
     })
   }
 
-  const onUserPing = (handler: (user: User) => void) => {
-    $socket.on(SocketMessage.pingUser, ({ user }: UserMessage) => handler(user))
+  const onUserPing = (handler: (gamer: Gamer) => void) => {
+    $socket.on(SocketMessage.pingUser, ({ gamer }: GamerMessage) => handler(gamer))
   }
 
   return {

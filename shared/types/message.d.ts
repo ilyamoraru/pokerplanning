@@ -1,7 +1,6 @@
 export type VoteMessage = {
   room: string
-  user: User
-  card?: Card
+  gamer: Gamer
 }
 
 export type ResetVoteMessage = {
@@ -11,19 +10,19 @@ export type ResetVoteMessage = {
 //подключение
 export type ConnectionMessage = {
   room: string
-  user: User
+  gamer: Gamer
   type: 'connect' | 'disconnect'
 }
 
 // сообщение, что в игре
 export type UserPingMessage = {
   room: string
-  user: User
+  gamer: Gamer
 }
 
 export type EndVoteMessage = {
   room: string
-  user: User
+  gamer: Gamer
 }
 
 export type EndGameMessage = string

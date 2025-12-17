@@ -2,6 +2,7 @@ import type { Task } from '#shared/types/task'
 
 export const taskMock: Task = {
   id: '123123',
+  idReadable: 'A-1488',
   title: 'task ',
   url: 'https://youtrack.intickets.ru/issue/A-1271/Izmeneniya-v-infre',
   description: '<p>description</p>',

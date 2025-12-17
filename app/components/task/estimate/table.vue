@@ -13,17 +13,19 @@ const iconComponent = resolveComponent('Icon')
 const linkComponent = resolveComponent('NuxtLink')
 const tableColumns: TableColumn<Task>[] = [
   {
-    accessorKey: 'id',
+    accessorKey: 'idReadable',
     header: 'Задача',
     cell: ({ row }) =>
-      h(linkComponent, { to: `/vote/${row.getValue('id')}` }, () => row.getValue('id')),
+      h(linkComponent, { to: `/vote/${row.getValue('idReadable')}` }, () =>
+        row.getValue('idReadable')
+      ),
     meta: { class: { td: 'cursor-pointer' } }
   },
   {
     accessorKey: 'title',
     header: 'Название',
     cell: ({ row }) =>
-      h(linkComponent, { to: `/vote/${row.getValue('id')}` }, () => row.getValue('title')),
+      h(linkComponent, { to: `/vote/${row.getValue('idReadable')}` }, () => row.getValue('title')),
     meta: { class: { td: 'cursor-pointer' } }
   },
   {
@@ -39,6 +41,6 @@ const tableColumns: TableColumn<Task>[] = [
 ]
 
 const onSelect = (_e: Event, row: TableRow<Task>) => {
-  navigateTo(`/vote/${row.id}`)
+  navigateTo(`/vote/${row.getValue('idReadable')}`)
 }
 </script>

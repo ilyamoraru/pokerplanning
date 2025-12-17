@@ -19,12 +19,12 @@
 <script lang="ts" setup>
 const props = defineProps<{
   value: Card
-  userVote?: Card
+  gamerVote?: Card
 }>()
 const emit = defineEmits<{
   (e: 'vote', value?: Card): void
 }>()
 const cardIsActive = computed(
-  () => props.userVote?.type === props.value.type && props.userVote?.value === props.value.value
+  () => props.gamerVote?.type === props.value.type && props.gamerVote?.value === props.value.value
 )
 </script>

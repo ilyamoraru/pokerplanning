@@ -1,15 +1,14 @@
-export const useSocketUserVote = (room: Ref<string>, user: Ref<User>) => {
+export const useSocketUserVote = (room: string) => {
   const { $socket } = useNuxtApp()
 
   /**
    * голосуем
-   * @param card
+   * @param gamer
    */
-  const vote = (card: Card) => {
+  const vote = (gamer: Gamer) => {
     $socket.emit(SocketMessage.vote, {
-      user: user.value,
-      room: room.value,
-      card
+      gamer,
+      room: room
     } as VoteMessage)
   }
 
@@ -23,10 +22,27 @@ export const useSocketUserVote = (room: Ref<string>, user: Ref<User>) => {
   }
 
   /**
+   * открываем карты
+   */
+  const revealCards = () => {
+    $socket.emit(SocketMessage.revealCards, room)
+  }
+
+  /**
+   * событие открытия карт
+   * @param handler
+   */
+  const onRevealCards = (handler: () => void) => {
+    $socket.on(SocketMessage.revealCards, () => {
+      handler()
+    })
+  }
+
+  /**
    *  сбрасываем голосование
    */
   const resetVote = () => {
-    $socket.emit(SocketMessage.resetVote)
+    $socket.emit(SocketMessage.resetVote, room)
   }
 
   /**
@@ -41,10 +57,10 @@ export const useSocketUserVote = (room: Ref<string>, user: Ref<User>) => {
   /**
    * метод запускает открытие модалки с завершение голосования
    */
-  const endVote = () => {
+  const endVote = (gamer: Gamer) => {
     $socket.emit(SocketMessage.endVote, {
-      room: room.value,
-      user: user.value
+      room,
+      gamer
     } as EndVoteMessage)
   }
 
@@ -61,6 +77,8 @@ export const useSocketUserVote = (room: Ref<string>, user: Ref<User>) => {
   return {
     vote,
     onUserVote,
+    revealCards,
+    onRevealCards,
     resetVote,
     onResetVote,
     endVote,
