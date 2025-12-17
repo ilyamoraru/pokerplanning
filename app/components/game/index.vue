@@ -41,9 +41,17 @@
       </div>
       <div />
     </div>
-    <UContainer as="footer" class="fixed bottom-4 left-0 left-1/2 -translate-x-1/2 bg-white p-4">
+    <UContainer
+      as="footer"
+      class="border border-neutral-200 border-b-0 rounded-b-none rounded fixed bottom-0 left-0 left-1/2 -translate-x-1/2 bg-white p-4"
+    >
       <CardDesk v-if="!gameIsDone" :gamer-vote="currentGamer?.card" @vote="onGamerVote" />
-      <RoomResults v-else :gamers="allGamers" />
+      <RoomResults
+        v-else
+        :gamers="allGamers"
+        @to-analytics="onSendToAnalytics"
+        @save-estimate="onSaveEstimate"
+      />
     </UContainer>
   </div>
 </template>
@@ -93,10 +101,12 @@ const resetGame = () => {
   emit('update:gameIsDone', false)
   emit('resetGame')
 }
-
 const onGamerVote = (card?: Card) => {
   emit('vote', card)
 }
+
+const onSendToAnalytics = () => {}
+const onSaveEstimate = (value: number) => {}
 </script>
 
 <style scoped>

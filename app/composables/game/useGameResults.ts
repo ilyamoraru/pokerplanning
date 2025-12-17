@@ -4,7 +4,8 @@ export const useGameResults = (gamers: Gamer[]) => {
     .map((item) => item.card!.value)
 
   const calculateAverage = (values: number[]): number => {
-    const value = values.reduce((a, b) => a + b) / values.length
+    const value = values.reduce((a, b) => a + b, 0) / values.length
+    if (!value) return 0
 
     return Number(value.toFixed(2))
   }

@@ -1,6 +1,6 @@
 <template>
   <section class="min-h-[calc(100vh-var(--ui-header-height))]">
-    <RoomGame
+    <Game
       v-model:game-is-done="gameIsDone"
       :gamers="roomGamers"
       :current-gamer="currentGamer"
