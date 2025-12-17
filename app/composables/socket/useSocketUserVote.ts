@@ -1,15 +1,14 @@
-export const useSocketUserVote = (room: Ref<string>, user: Ref<User>) => {
+export const useSocketUserVote = (room: string) => {
   const { $socket } = useNuxtApp()
 
   /**
    * голосуем
-   * @param card
+   * @param gamer
    */
-  const vote = (card: Card) => {
+  const vote = (gamer: Gamer) => {
     $socket.emit(SocketMessage.vote, {
-      user: user.value,
-      room: room.value,
-      card
+      gamer,
+      room: room
     } as VoteMessage)
   }
 
@@ -41,10 +40,10 @@ export const useSocketUserVote = (room: Ref<string>, user: Ref<User>) => {
   /**
    * метод запускает открытие модалки с завершение голосования
    */
-  const endVote = () => {
+  const endVote = (gamer: Gamer) => {
     $socket.emit(SocketMessage.endVote, {
-      room: room.value,
-      user: user.value
+      room,
+      gamer
     } as EndVoteMessage)
   }
 

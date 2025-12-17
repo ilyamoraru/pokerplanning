@@ -4,38 +4,38 @@
       <div />
       <div class="table-module_top">
         <ul class="flex gap-2 justify-center">
-          <li v-for="userTop in userFields[0]" :key="userTop.id">
-            <UserGamerCard :value="userTop" :game-is-done />
+          <li v-for="gamerTop in gamerFields[0]" :key="gamerTop.id">
+            <UserGamerCard :value="gamerTop" :game-is-done />
           </li>
         </ul>
       </div>
       <div />
       <div class="table-module_left py-[160px]">
         <ul class="flex flex-col h-full gap-2 justify-center items-center">
-          <li v-for="userLeft in userFields[2]" :key="userLeft.id">
-            <UserGamerCard :value="userLeft" :game-is-done />
+          <li v-for="gamerLeft in gamerFields[2]" :key="gamerLeft.id">
+            <UserGamerCard :value="gamerLeft" :game-is-done />
           </li>
         </ul>
       </div>
       <RoomField
         class="table-module_table"
-        :gamers="users"
+        :gamers="allGamers"
         :game-is-done
         @reveal-cards="revealCards"
         @reset="resetGame"
       />
       <div class="table-module_right py-[160px]">
         <ul class="flex flex-col gap-2 h-full justify-center">
-          <li v-for="userRight in userFields[3]" :key="userRight.id">
-            <UserGamerCard :value="userRight" :game-is-done />
+          <li v-for="gamerRight in gamerFields[3]" :key="gamerRight.id">
+            <UserGamerCard :value="gamerRight" :game-is-done />
           </li>
         </ul>
       </div>
       <div />
       <div class="table-module_bottom">
         <ul class="flex gap-2 justify-center">
-          <li v-for="userBottom in userFields[1]" :key="userBottom.id">
-            <UserGamerCard :value="userBottom" :game-is-done />
+          <li v-for="gamerBottom in gamerFields[1]" :key="gamerBottom.id">
+            <UserGamerCard :value="gamerBottom" :game-is-done />
           </li>
         </ul>
       </div>
@@ -43,16 +43,17 @@
     </div>
     <CardDesk
       class="fixed bottom-4 left-0 left-1/2 -translate-x-1/2 bg-white p-4"
-      :user-vote="user?.card"
-      @vote="onUserVote"
+      :gamer-vote="currentGamer?.card"
+      @vote="onGamerVote"
     />
   </div>
 </template>
 
 <script lang="ts" setup>
 const props = defineProps<{
-  users: Gamer[]
-  user: Gamer
+  gamers: Gamer[]
+  currentGamer: Gamer
+  room: string
 }>()
 const emit = defineEmits<{
   (e: 'vote', card?: Card): void
@@ -61,8 +62,9 @@ const emit = defineEmits<{
 const gameIsDone = ref(false)
 
 const maxUsersOnDirection = 4
-const userFields = computed(() => {
-  return props.users.reduce(
+const allGamers = computed(() => [props.currentGamer, ...props.gamers])
+const gamerFields = computed(() => {
+  return allGamers.value.reduce(
     (acc, item) => {
       const [top, bottom, left, right] = acc
 
@@ -89,7 +91,7 @@ const resetGame = () => {
   gameIsDone.value = false
 }
 
-const onUserVote = (card?: Card) => {
+const onGamerVote = (card?: Card) => {
   emit('vote', card)
 }
 </script>

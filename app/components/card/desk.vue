@@ -3,7 +3,7 @@
     <UiTitle severity="h3" class="text-center mb-4">Выберите карту:</UiTitle>
     <ul class="flex justify-center gap-4">
       <li v-for="card in desk" :key="card.value" class="w-full max-w-14">
-        <CardItem :value="card" :user-vote class="h-full w-full" @vote="emit('vote', $event)" />
+        <CardItem :value="card" :gamer-vote class="h-full w-full" @vote="emit('vote', $event)" />
       </li>
     </ul>
   </UContainer>
@@ -11,7 +11,7 @@
 
 <script lang="ts" setup>
 defineProps<{
-  userVote?: Card
+  gamerVote?: Card
 }>()
 const emit = defineEmits<{
   (e: 'vote', value?: Card): void

@@ -1,4 +1,4 @@
-export const useSocketEndGame = (room: Ref<string>) => {
+export const useSocketEndGame = (room: string) => {
   const { $socket } = useNuxtApp()
   const router = useRouter()
   const { disconnectSocket } = useSocket()
@@ -7,7 +7,7 @@ export const useSocketEndGame = (room: Ref<string>) => {
    * инициируем конец игры
    */
   const endGame = () => {
-    $socket.emit(SocketMessage.endVote, room.value)
+    $socket.emit(SocketMessage.endVote, room)
   }
 
   /**

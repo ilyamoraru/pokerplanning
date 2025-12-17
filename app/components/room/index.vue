@@ -1,52 +1,87 @@
 <template>
   <section class="min-h-[calc(100vh-var(--ui-header-height))]">
-    <RoomGame :users="roomGamers" :user="roomGamers[0]!" @vote="onUserVote" />
+    <RoomGame :gamers="roomGamers" :current-gamer="currentGamer" :room @vote="onCurrentGamerVote" />
   </section>
 </template>
 
 <script lang="ts" setup>
+import { useSocketUserVote } from '~/composables/socket/useSocketUserVote'
+
 const props = defineProps<{
   user: User
   room: string
 }>()
 
 const { connectRoom, disconnectRoom, onUserConnect, onUserDisconnect, onUserPing } =
-  useSocketUserConnect(props.room, props.user)
-const roomGamers = ref<Gamer[]>([UserToGamer(props.user)])
+  useSocketUserConnect(props.room)
+const { onUserVote, vote } = useSocketUserVote(props.room)
+const currentGamer = ref<Gamer>({
+  ...props.user,
+  card: undefined
+})
+//другие игроки
+const roomGamers = ref<Gamer[]>([])
 
-const getUserIndex = (user: User) => {
+/**
+ * получение индекса игрока
+ * @param user
+ */
+const getGamerIndex = (user: User) => {
   return roomGamers.value.findIndex((item) => item.id === user.id)
 }
-const addUserInRoom = (user: User) => {
-  const index = getUserIndex(user)
+/**
+ * добавление игрока
+ * @param gamer
+ */
+const addGamerInRoom = (gamer: Gamer) => {
+  const index = getGamerIndex(gamer)
 
-  if (index >= 1) return
+  if (index >= 0) return
 
-  roomGamers.value.push(UserToGamer(user))
+  roomGamers.value.push(gamer)
 }
-const removeUserFromRoom = (user: User) => {
+/**
+ * удаление игрока
+ * @param user
+ */
+const removeGamerFromRoom = (user: User) => {
   if (user.id === props.user.id) return
 
-  const index = getUserIndex(user)
+  const index = getGamerIndex(user)
 
   roomGamers.value.splice(index, 1)
 }
-
-const onUserVote = (card?: Card) => {
-  roomGamers.value[0]!.card = card
+/**
+ * событие голосования текущим игроком
+ * @param card
+ */
+const onCurrentGamerVote = (card?: Card) => {
+  currentGamer.value!.card = card
+  vote(currentGamer.value)
 }
+/**
+ * событие голосования другим игроком
+ * @param message
+ */
+const onAnotherUserVote = (message: VoteMessage) => {
+  const gamerToChange = getGamerIndex(message.gamer)
+  if (gamerToChange < 0) return
 
+  roomGamers.value[gamerToChange]!.card = message.gamer?.card
+}
+// вешаем обработчики сообщений сокета
 onMounted(() => {
-  connectRoom()
-  onUserConnect(addUserInRoom)
-  onUserPing(addUserInRoom)
-  onUserDisconnect(removeUserFromRoom)
+  connectRoom(currentGamer.value)
+  onUserConnect(currentGamer.value, addGamerInRoom)
+  onUserPing(addGamerInRoom)
+  onUserDisconnect(removeGamerFromRoom)
+  onUserVote(onAnotherUserVote)
 })
 
 window.onbeforeunload = () => {
-  disconnectRoom()
+  disconnectRoom(currentGamer.value)
 }
 onUnmounted(() => {
-  disconnectRoom()
+  disconnectRoom(currentGamer.value)
 })
 </script>

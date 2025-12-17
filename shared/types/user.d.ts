@@ -9,7 +9,7 @@ export type Gamer = User & {
   card?: Card
 }
 
-export type UserMessage = {
-  user: User
+export type GamerMessage = {
+  gamer: Gamer
   room: string
 }

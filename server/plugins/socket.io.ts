@@ -3,6 +3,7 @@ import { Server as Engine } from 'engine.io'
 import type { Socket } from 'socket.io'
 import { Server } from 'socket.io'
 import { defineEventHandler } from 'h3'
+import type { GamerMessage } from '#shared/types/user'
 
 export default defineNitroPlugin((nitroApp: NitroApp) => {
   const engine = new Engine()
@@ -14,16 +15,19 @@ export default defineNitroPlugin((nitroApp: NitroApp) => {
     return io.of('/').adapter.rooms.get(room)?.size || 0
   }
 
+  // работа с присоединением юзера
   const userConnectionEvent = (socket: Socket) => {
     socket.on(SocketMessage.connection, (data: ConnectionMessage) => {
-      const { room, user, type } = data
+      const { room, gamer, type } = data
       switch (type) {
         case 'connect':
           {
             //подключаем юзера к комнате
             socket.join(room)
             //сообщаем всем, что пришел новый юзер
-            socket.broadcast.to(room).emit(SocketMessage.connectUser, { user } as UserMessage)
+            socket.broadcast
+              .to(room)
+              .emit(SocketMessage.connectUser, { gamer, room } as GamerMessage)
           }
           break
         case 'disconnect':
@@ -31,7 +35,7 @@ export default defineNitroPlugin((nitroApp: NitroApp) => {
             // отключаем юзера из команты
             socket.leave(room)
             //говорим всем, что юзеры ушли
-            socket.broadcast.to(room).emit(SocketMessage.disconnectUser, { user } as UserMessage)
+            socket.broadcast.to(room).emit(SocketMessage.disconnectUser, { gamer } as GamerMessage)
             const roomSize = getRoomSize(room)
 
             console.log('client leave. room size: ', roomSize)
@@ -40,11 +44,12 @@ export default defineNitroPlugin((nitroApp: NitroApp) => {
       }
     })
 
-    socket.on(SocketMessage.pingUser, ({ user, room }: UserMessage) => {
-      socket.broadcast.to(room).emit(SocketMessage.pingUser, { user } as UserMessage)
+    socket.on(SocketMessage.pingUser, ({ gamer, room }: GamerMessage) => {
+      socket.broadcast.to(room).emit(SocketMessage.pingUser, { gamer, room } as GamerMessage)
     })
   }
 
+  //работа с голосованием
   const userVoteEvent = (socket: Socket) => {
     socket.on(SocketMessage.vote, (data: VoteMessage) => {
       socket.broadcast.to(data.room).emit(SocketMessage.vote, data as VoteMessage)
@@ -59,8 +64,8 @@ export default defineNitroPlugin((nitroApp: NitroApp) => {
 
   const endVoteMessage = (socket: Socket) => {
     socket.on(SocketMessage.endVote, (data: EndVoteMessage) => {
-      const { room, user } = data
-      socket.broadcast.to(room).emit(SocketMessage.endVote, { user } as UserPingMessage)
+      const { room, gamer } = data
+      socket.broadcast.to(room).emit(SocketMessage.endVote, { gamer, room } as UserPingMessage)
     })
   }
 
