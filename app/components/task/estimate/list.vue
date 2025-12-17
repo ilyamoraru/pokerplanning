@@ -1,10 +1,10 @@
 <template>
   <ul class="flex flex-col gap-4">
-    <li v-for="task in value" :key="task.id">
+    <li v-for="task in value" :key="task.idReadable">
       <NuxtLink
-        :to="`/vote/${task.id}`"
+        :to="`/vote/${task.idReadable}`"
         class="p-2 flex items-center rounded gap-1"
-        :class="{ 'bg-primary-100': route.params.room === task.id }"
+        :class="{ 'bg-primary-100': route.params.room === task.idReadable }"
       >
         <Icon name="mdi:task-add" size="20" />
 

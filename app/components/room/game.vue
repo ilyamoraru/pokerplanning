@@ -41,11 +41,10 @@
       </div>
       <div />
     </div>
-    <CardDesk
-      class="fixed bottom-4 left-0 left-1/2 -translate-x-1/2 bg-white p-4"
-      :gamer-vote="currentGamer?.card"
-      @vote="onGamerVote"
-    />
+    <UContainer as="footer" class="fixed bottom-4 left-0 left-1/2 -translate-x-1/2 bg-white p-4">
+      <CardDesk v-if="!gameIsDone" :gamer-vote="currentGamer?.card" @vote="onGamerVote" />
+      <RoomResults v-else :gamers="allGamers" />
+    </UContainer>
   </div>
 </template>
 
@@ -59,8 +58,8 @@ const props = defineProps<{
 const emit = defineEmits<{
   (e: 'vote', card?: Card): void
   (e: 'revealCards'): void
-  (e: 'resetGame'): void
   (e: 'update:gameIsDone', value: boolean): void
+  (e: 'resetGame'): void
 }>()
 
 const maxUsersOnDirection = 4

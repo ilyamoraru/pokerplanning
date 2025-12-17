@@ -9,7 +9,7 @@
     </div>
 
     <ul class="flex flex-col gap-2">
-      <li v-for="task in tasks" :key="task.id">
+      <li v-for="task in tasks" :key="task.idReadable">
         <TaskCard :value="task" />
       </li>
     </ul>
