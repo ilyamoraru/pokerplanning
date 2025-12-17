@@ -56,6 +56,12 @@ export default defineNitroPlugin((nitroApp: NitroApp) => {
     })
   }
 
+  const revealCardsEvent = (socket: Socket) => {
+    socket.on(SocketMessage.revealCards, (room: string) => {
+      socket.broadcast.to(room).emit(SocketMessage.revealCards)
+    })
+  }
+
   const resetVoteEvent = (socket: Socket) => {
     socket.on(SocketMessage.resetVote, (room: string) => {
       socket.broadcast.to(room).emit(SocketMessage.resetVote)
@@ -78,6 +84,7 @@ export default defineNitroPlugin((nitroApp: NitroApp) => {
   io.on('connection', (socket) => {
     userConnectionEvent(socket)
     userVoteEvent(socket)
+    revealCardsEvent(socket)
     resetVoteEvent(socket)
     endVoteMessage(socket)
     endGameMessage(socket)

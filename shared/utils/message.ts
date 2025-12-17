@@ -4,6 +4,7 @@ export enum SocketMessage {
   pingUser = 'pingUser',
   disconnectUser = 'disconnectUser',
   vote = 'vote',
+  revealCards = 'revealCards',
   resetVote = 'resetVote',
   endVote = 'endVote',
   endGame = 'endGame'

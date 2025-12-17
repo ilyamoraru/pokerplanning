@@ -54,12 +54,14 @@ const props = defineProps<{
   gamers: Gamer[]
   currentGamer: Gamer
   room: string
+  gameIsDone: boolean
 }>()
 const emit = defineEmits<{
   (e: 'vote', card?: Card): void
+  (e: 'revealCards'): void
+  (e: 'resetGame'): void
+  (e: 'update:gameIsDone', value: boolean): void
 }>()
-
-const gameIsDone = ref(false)
 
 const maxUsersOnDirection = 4
 const allGamers = computed(() => [props.currentGamer, ...props.gamers])
@@ -85,10 +87,12 @@ const gamerFields = computed(() => {
 })
 
 const revealCards = () => {
-  gameIsDone.value = true
+  emit('update:gameIsDone', true)
+  emit('revealCards')
 }
 const resetGame = () => {
-  gameIsDone.value = false
+  emit('update:gameIsDone', false)
+  emit('resetGame')
 }
 
 const onGamerVote = (card?: Card) => {

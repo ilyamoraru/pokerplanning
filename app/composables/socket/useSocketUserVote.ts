@@ -22,10 +22,27 @@ export const useSocketUserVote = (room: string) => {
   }
 
   /**
+   * открываем карты
+   */
+  const revealCards = () => {
+    $socket.emit(SocketMessage.revealCards, room)
+  }
+
+  /**
+   * событие открытия карт
+   * @param handler
+   */
+  const onRevealCards = (handler: () => void) => {
+    $socket.on(SocketMessage.revealCards, () => {
+      handler()
+    })
+  }
+
+  /**
    *  сбрасываем голосование
    */
   const resetVote = () => {
-    $socket.emit(SocketMessage.resetVote)
+    $socket.emit(SocketMessage.resetVote, room)
   }
 
   /**
@@ -60,6 +77,8 @@ export const useSocketUserVote = (room: string) => {
   return {
     vote,
     onUserVote,
+    revealCards,
+    onRevealCards,
     resetVote,
     onResetVote,
     endVote,

@@ -11,12 +11,12 @@ export default defineNuxtConfig({
   },
   app: {
     head: {
+      title: 'Poher-Poker',
       meta: [
         { charset: 'utf-8' },
-
-        { name: 'viewport', content: 'width=device-width, initial-scale=1' }
+        { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+        { name: 'description', content: "description: 'Голосуй, не голосуй...'," }
       ],
-      title: 'Poher-Poker',
       link: [{ rel: 'icon', href: '/favicon.png' }]
     }
   }
