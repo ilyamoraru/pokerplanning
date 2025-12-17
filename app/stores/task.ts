@@ -8,6 +8,8 @@ export const useTaskStore = defineStore('task', () => {
     const tasks = referenceTasksList.value.reduce(
       (acc, item) => {
         const { estimation } = item
+
+        if (!estimation) return acc
         if (!acc.has(estimation)) {
           acc.set(estimation, [])
         }

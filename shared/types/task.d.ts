@@ -3,5 +3,5 @@ export type Task = {
   title: string
   url: string
   description?: string
-  estimation: number
+  estimation?: number
 }
