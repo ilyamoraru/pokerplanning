@@ -22,7 +22,6 @@ export type UserPingMessage = {
 
 export type EndVoteMessage = {
   room: string
-  gamer: Gamer
 }
 
 export type EndGameMessage = string

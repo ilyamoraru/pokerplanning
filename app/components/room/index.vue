@@ -8,7 +8,11 @@
       @vote="onCurrentGamerVote"
       @reveal-cards="onCurrentGamerRevealCards"
       @reset-game="onCurrentGamerResetGame"
+      @to-analytics="sendToAnalytics"
+      @save-estimate="endGame"
     />
+    <GameEndModal v-if="gameIsEndingByUser" :sprints />
+    <GameEndLoader v-else-if="gameIsEnding" />
   </section>
 </template>
 
@@ -17,22 +21,30 @@ import { useSocketUserVote } from '~/composables/socket/useSocketUserVote'
 
 const props = defineProps<{
   user: User
+  sprints: Sprint[]
   room: string
 }>()
 
+//ОБЩЕЕ СОСТОЯНИЕ ИГРЫ
 const { connectRoom, disconnectRoom, onUserConnect, onUserDisconnect, onUserPing } =
   useSocketUserConnect(props.room)
-const { onUserVote, vote, revealCards, onRevealCards, resetVote, onResetVote } = useSocketUserVote(
-  props.room
-)
+onMounted(() => {
+  connectRoom(currentGamer.value)
+  onUserConnect(currentGamer.value, addGamerInRoom)
+  onUserPing(addGamerInRoom)
+  onUserDisconnect(removeGamerFromRoom)
+})
+const gameIsDone = ref(false)
+const gameIsEndingByUser = ref(false)
+const gameIsEnding = ref(false)
+
+//ИГРОК
 const currentGamer = ref<Gamer>({
   ...props.user,
   card: undefined
 })
 //другие игроки
 const roomGamers = ref<Gamer[]>([])
-//статус игры
-const gameIsDone = ref(false)
 /**
  * получение индекса игрока
  * @param user
@@ -62,6 +74,10 @@ const removeGamerFromRoom = (user: User) => {
 
   roomGamers.value.splice(index, 1)
 }
+
+//ГОЛОСОВАНИЕ
+const { vote, onUserVote } = useSocketUserVote(props.room)
+
 /**
  * событие голосования текущим игроком
  * @param card
@@ -80,6 +96,13 @@ const onAnotherUserVote = (message: VoteMessage) => {
 
   roomGamers.value[gamerToChange]!.card = message.gamer?.card
 }
+
+onMounted(() => {
+  onUserVote(onAnotherUserVote)
+})
+
+//ОТКРЫТИЕ КАРТ
+const { revealCards, onRevealCards } = useSocketUserVote(props.room)
 /**
  * открыли карты
  */
@@ -93,29 +116,59 @@ const onCurrentGamerRevealCards = () => {
 const onRevealCardsByAnotherGamer = () => {
   gameIsDone.value = true
 }
+onMounted(() => {
+  onRevealCards(onRevealCardsByAnotherGamer)
+})
 
+//СБРОС КАРТ
+const { resetVote, onResetVote } = useSocketUserVote(props.room)
+/**
+ * сбрасываем все карты у игроков
+ */
 const resetCards = () => {
   currentGamer.value!.card = undefined
   roomGamers.value.forEach((gamer: Gamer) => (gamer!.card = undefined))
 }
+/**
+ * сбрасываем игру
+ */
 const onCurrentGamerResetGame = () => {
   resetCards()
   resetVote()
 }
 
+/**
+ * кто то сбросил игру
+ */
 const onResetGameByAnotherGamer = () => {
   gameIsDone.value = false
   resetCards()
 }
+onMounted(() => {
+  onResetVote(onResetGameByAnotherGamer)
+})
+
+//ЗАВЕРШЕНИЕ ИГРЫ
+const { endVote, onEndVote } = useSocketUserVote(props.room)
+
+const sendToAnalytics = () => {}
+
+const endGame = () => {
+  endVote()
+  gameIsEndingByUser.value = true
+}
+const endGameByAnotherGamer = () => {
+  gameIsEnding.value = true
+}
+onMounted(() => {
+  onEndVote(endGameByAnotherGamer)
+})
 // вешаем обработчики сообщений сокета
 onMounted(() => {
   connectRoom(currentGamer.value)
   onUserConnect(currentGamer.value, addGamerInRoom)
   onUserPing(addGamerInRoom)
   onUserDisconnect(removeGamerFromRoom)
-  onUserVote(onAnotherUserVote)
-  onResetVote(onResetGameByAnotherGamer)
-  onRevealCards(onRevealCardsByAnotherGamer)
 })
 
 window.onbeforeunload = () => {

@@ -8,7 +8,7 @@
         <UiTitle severity="h2" class="text-center mb-2">Подключаемся к комнате...</UiTitle>
         <UProgress :model-value="null" />
       </UContainer>
-      <Room v-else :user :room="route.params.room as string" />
+      <Room v-else :user :sprints="sprints ?? []" :room="route.params.room as string" />
     </UMain>
   </ClientOnly>
 </template>
@@ -16,9 +16,10 @@
 <script lang="ts" setup>
 definePageMeta({
   layout: 'vote',
-  middleware: ['task']
+  middleware: ['task', 'sprint']
 })
 const { user } = storeToRefs(useUserStore())
+const { sprints } = storeToRefs(useSprintStore())
 const route = useRoute()
 
 const { isConnected, connectSocket, disconnectSocket } = useSocket()

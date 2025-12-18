@@ -28,24 +28,34 @@ export const useTaskStore = defineStore('task', () => {
   })
 
   const getReferenceTasks = async () => {
-    if (referenceTasksList.value) return
+    try {
+      if (referenceTasksList.value) return
 
-    loadingReferenceTasks.value = true
-    const { data } = await fetchReferenceTasks()
+      loadingReferenceTasks.value = true
+      const { data } = await fetchReferenceTasks()
 
-    if (data.value) {
-      referenceTasksList.value = data.value
+      if (data.value) {
+        referenceTasksList.value = data.value
+      }
+    } catch (error) {
+      console.error('FAILED TO LOAD REFERENCE TASKS ', error)
+      referenceTasksList.value = []
+    } finally {
+      loadingReferenceTasks.value = false
     }
-    loadingReferenceTasks.value = false
   }
 
   //tasks to estimate
   const tasksToEstimate = ref<Task[] | undefined>(undefined)
   const getTasksToEstimate = async () => {
-    const { data } = await fetchAllTasksList()
+    try {
+      const { data } = await fetchAllTasksList()
 
-    if (data.value) {
-      tasksToEstimate.value = data.value
+      if (data.value) {
+        tasksToEstimate.value = data.value
+      }
+    } catch (error) {
+      console.error('FAILED TO LOAD TASKS ', error)
     }
   }
 

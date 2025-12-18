@@ -70,8 +70,8 @@ export default defineNitroPlugin((nitroApp: NitroApp) => {
 
   const endVoteMessage = (socket: Socket) => {
     socket.on(SocketMessage.endVote, (data: EndVoteMessage) => {
-      const { room, gamer } = data
-      socket.broadcast.to(room).emit(SocketMessage.endVote, { gamer, room } as UserPingMessage)
+      const { room } = data
+      socket.broadcast.to(room).emit(SocketMessage.endVote)
     })
   }
 
