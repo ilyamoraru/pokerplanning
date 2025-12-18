@@ -1,0 +1,20 @@
+services:
+  nuxt-app:
+    image: nuxt-docker
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000" # Forward port 3000 on host to port 3000 in container
+    volumes:
+      - .:/app # Mount the local directory to the container for hot reloading
+      - /app/node_modules # Keep node_modules inside the container
+    environment:
+      HOST: 0.0.0.0 # Essential for Nuxt to be accessible outside the container's localhost
+    command: npm run dev # Use your development script
+    networks:
+      - poker-frontend
+
+networks:
+  poker-frontend:
+    driver: bridge
