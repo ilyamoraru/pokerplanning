@@ -22,5 +22,10 @@ export default defineNuxtConfig({
   },
   ui: {
     fonts: false
+  },
+  icon: {
+    serverBundle: {
+      collections: ['mdi', 'lucide']
+    }
   }
 })

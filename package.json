@@ -29,6 +29,8 @@
     "vue-router": "^4.6.3"
   },
   "devDependencies": {
+    "@iconify-json/lucide": "^1.2.81",
+    "@iconify-json/mdi": "^1.2.3",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-prettier": "^5.5.4",
     "prettier": "^3.7.4"
