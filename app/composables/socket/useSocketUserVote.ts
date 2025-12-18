@@ -57,10 +57,9 @@ export const useSocketUserVote = (room: string) => {
   /**
    * метод запускает открытие модалки с завершение голосования
    */
-  const endVote = (gamer: Gamer) => {
+  const endVote = () => {
     $socket.emit(SocketMessage.endVote, {
-      room,
-      gamer
+      room
     } as EndVoteMessage)
   }
 
