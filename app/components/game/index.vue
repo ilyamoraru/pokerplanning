@@ -42,25 +42,28 @@
       <div />
     </div>
     <UContainer
+      class="fixed flex top-[var(--ui-header-height)] right-0 left-1/2 -translate-x-1/2 bg-white p-4"
+    >
+      <UiTitle severity="h2" class="">{{ taskName }}</UiTitle>
+      <UButton size="xl" color="warning" class="ml-auto" @click="emit('toAnalytics')">
+        Отправить в аналитику
+      </UButton>
+    </UContainer>
+    <UContainer
       as="footer"
       class="border border-neutral-200 border-b-0 rounded-b-none rounded fixed bottom-0 left-0 left-1/2 -translate-x-1/2 bg-white p-4"
     >
       <CardDesk v-if="!gameIsDone" :gamer-vote="currentGamer?.card" @vote="emit('vote', $event)" />
-      <RoomResults
-        v-else
-        :gamers="allGamers"
-        @to-analytics="emit('toAnalytics')"
-        @save-estimate="emit('saveEstimate', $event)"
-      />
+      <RoomResults v-else :gamers="allGamers" @save-estimate="emit('saveEstimate', $event)" />
     </UContainer>
   </div>
 </template>
 
 <script lang="ts" setup>
 const props = defineProps<{
+  taskName: Task['title']
   gamers: Gamer[]
   currentGamer: Gamer
-  room: string
   gameIsDone: boolean
 }>()
 const emit = defineEmits<{

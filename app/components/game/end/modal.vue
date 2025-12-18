@@ -4,10 +4,8 @@
       <div class="p-6">
         <UiTitle severity="h2" class="text-center">Завершение оценки</UiTitle>
         <div class="mt-10 flex flex-col gap-4">
-          <UCheckbox v-model="toReference" label="Добавить задачу к эталонным" />
-          <UButton class="justify-center" size="xl" variant="outline">Отправить в беклог</UButton>
+          <UCheckbox v-model="isReference" label="Добавить задачу к эталонным" />
           <template v-if="sprints.length">
-            <USeparator label="или" />
             <USelect
               v-model="selectedSprint"
               :items="sprints"
@@ -15,9 +13,17 @@
               label-key="name"
               value-key="id"
             />
-            <UButton class="justify-center" size="xl" :disabled="!selectedSprint"
-              >Отправить в спринт</UButton
+            <UButton
+              class="justify-center"
+              size="xl"
+              :disabled="!selectedSprint"
+              @click="emit('estimate', { sprintId: selectedSprint!, isReference })"
             >
+              Отправить в спринт
+            </UButton>
+          </template>
+          <template v-else>
+            Не удалось загрузить спринты. Или их просто нет :(
           </template>
         </div>
       </div>
@@ -29,7 +35,10 @@
 defineProps<{
   sprints: Sprint[]
 }>()
+const emit = defineEmits<{
+  (e: 'estimate', value: { sprintId: Sprint['id']; isReference: boolean }): void
+}>()
 
-const toReference = ref(false)
+const isReference = ref(false)
 const selectedSprint = ref<Sprint['id']>()
 </script>

@@ -9,9 +9,6 @@
       <UProgress :model-value="agreement" />
     </div>
     <div class="flex gap-2">
-      <UButton size="xl" variant="outline" @click="emit('toAnalytics')">
-        Отправить в аналитику
-      </UButton>
       <UButton size="xl" @click="emit('saveEstimate', average)"> Сохранить оценку </UButton>
     </div>
   </UContainer>
@@ -22,7 +19,6 @@ const props = defineProps<{
   gamers: Gamer[]
 }>()
 const emit = defineEmits<{
-  (e: 'toAnalytics'): void
   (e: 'saveEstimate', value: number): void
 }>()
 

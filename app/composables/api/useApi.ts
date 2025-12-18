@@ -28,12 +28,16 @@ export const useApi = () => {
    * @param taskId
    */
   const putTaskToAnalytics = async (taskId: Task['id']) => {
-    //PUT /secured/tasks/return
-    // body: {taskId}
+    return useFetch('/api/secured/tasks/return', {
+      method: 'PUT',
+      body: {
+        taskId
+      }
+    })
   }
 
   /**
-   * оценка таски в текущий спринт
+   * оценка таски  спринт
    * @param taskId
    * @param sprintId
    * @param estimation
@@ -45,8 +49,15 @@ export const useApi = () => {
     estimation: number,
     isReference?: boolean
   ) => {
-    //PUT /secured/tasks/estimate
-    // body: {taskId, sprintId, isReference}
+    return useFetch('/api/secured/tasks/estimate', {
+      method: 'PUT',
+      body: {
+        taskId,
+        sprintId,
+        estimation,
+        isReference
+      }
+    })
   }
 
   /**
@@ -61,6 +72,8 @@ export const useApi = () => {
     fetchUser,
     fetchAllTasksList,
     fetchReferenceTasks,
-    getSprintsList
+    getSprintsList,
+    putTaskToAnalytics,
+    estimateTask
   }
 }

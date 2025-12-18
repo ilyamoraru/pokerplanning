@@ -1,3 +1,5 @@
+import { id } from '@nuxt/ui/locale'
+
 export const useTaskStore = defineStore('task', () => {
   const { fetchReferenceTasks, fetchAllTasksList } = useApi()
   const referenceTasksList = ref<Task[] | undefined>(undefined)
@@ -58,6 +60,24 @@ export const useTaskStore = defineStore('task', () => {
       console.error('FAILED TO LOAD TASKS ', error)
     }
   }
+  const roomTask = ref<Task>()
+  const getRoomTask = (idReadable: Task['idReadable']) => {
+    if (!tasksToEstimate.value)
+      throw createError({ statusCode: 404, statusMessage: 'Page Not Found' })
+
+    const task = tasksToEstimate.value.find((task) => task.idReadable === idReadable)
+
+    if (task) {
+      roomTask.value = task
+    } else {
+      if (import.meta.server) {
+        throw createError({ statusCode: 404, statusMessage: 'Page Not Found' })
+      }
+      if (import.meta.client) {
+        return useRouter().push('/404')
+      }
+    }
+  }
 
   return {
     referenceTasksList,
@@ -65,6 +85,8 @@ export const useTaskStore = defineStore('task', () => {
     getReferenceTasks,
     referenceTasks,
     getTasksToEstimate,
-    tasksToEstimate
+    tasksToEstimate,
+    roomTask,
+    getRoomTask
   }
 })
