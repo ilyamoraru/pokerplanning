@@ -12,7 +12,7 @@
       @save-estimate="endGame"
     />
     <GameEndModal v-if="gameIsEndingByUser" :sprints />
-    <GameEndLoader v-else-if="gameIsEnding" />
+    <GameEndLoader v-else-if="gameIsEnding" class="bg-white fixed top-0 left-0 z-10 size-full" />
   </section>
 </template>
 
@@ -33,6 +33,12 @@ onMounted(() => {
   onUserConnect(currentGamer.value, addGamerInRoom)
   onUserPing(addGamerInRoom)
   onUserDisconnect(removeGamerFromRoom)
+})
+window.onbeforeunload = () => {
+  disconnectRoom(currentGamer.value)
+}
+onUnmounted(() => {
+  disconnectRoom(currentGamer.value)
 })
 const gameIsDone = ref(false)
 const gameIsEndingByUser = ref(false)
@@ -162,19 +168,5 @@ const endGameByAnotherGamer = () => {
 }
 onMounted(() => {
   onEndVote(endGameByAnotherGamer)
-})
-// вешаем обработчики сообщений сокета
-onMounted(() => {
-  connectRoom(currentGamer.value)
-  onUserConnect(currentGamer.value, addGamerInRoom)
-  onUserPing(addGamerInRoom)
-  onUserDisconnect(removeGamerFromRoom)
-})
-
-window.onbeforeunload = () => {
-  disconnectRoom(currentGamer.value)
-}
-onUnmounted(() => {
-  disconnectRoom(currentGamer.value)
 })
 </script>
