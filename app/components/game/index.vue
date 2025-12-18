@@ -45,12 +45,12 @@
       as="footer"
       class="border border-neutral-200 border-b-0 rounded-b-none rounded fixed bottom-0 left-0 left-1/2 -translate-x-1/2 bg-white p-4"
     >
-      <CardDesk v-if="!gameIsDone" :gamer-vote="currentGamer?.card" @vote="onGamerVote" />
+      <CardDesk v-if="!gameIsDone" :gamer-vote="currentGamer?.card" @vote="emit('vote', $event)" />
       <RoomResults
         v-else
         :gamers="allGamers"
-        @to-analytics="onSendToAnalytics"
-        @save-estimate="onSaveEstimate"
+        @to-analytics="emit('toAnalytics')"
+        @save-estimate="emit('saveEstimate', $event)"
       />
     </UContainer>
   </div>
@@ -68,6 +68,8 @@ const emit = defineEmits<{
   (e: 'revealCards'): void
   (e: 'update:gameIsDone', value: boolean): void
   (e: 'resetGame'): void
+  (e: 'toAnalytics'): void
+  (e: 'saveEstimate', estimate: number): void
 }>()
 
 const maxUsersOnDirection = 4
@@ -101,12 +103,6 @@ const resetGame = () => {
   emit('update:gameIsDone', false)
   emit('resetGame')
 }
-const onGamerVote = (card?: Card) => {
-  emit('vote', card)
-}
-
-const onSendToAnalytics = () => {}
-const onSaveEstimate = (value: number) => {}
 </script>
 
 <style scoped>
