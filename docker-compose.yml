@@ -11,9 +11,11 @@ services:
       - /app/node_modules # Keep node_modules inside the container
     environment:
       HOST: 0.0.0.0 # Essential for Nuxt to be accessible outside the container's localhost
-    command: npm run dev # Use your development script
+#    command: npm run dev # Use your development script
     networks:
       - poker-frontend
+#     restart: on-failure:5
+#    restart: always
 
 networks:
   poker-frontend:
