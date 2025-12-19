@@ -22,9 +22,7 @@
               Отправить в спринт
             </UButton>
           </template>
-          <template v-else>
-            Не удалось загрузить спринты. Или их просто нет :(
-          </template>
+          <template v-else> Не удалось загрузить спринты. Или их просто нет :( </template>
         </div>
       </div>
     </template>

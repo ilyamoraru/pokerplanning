@@ -1,5 +1,5 @@
 /** @type {import("prettier").Config} */
-let config = {
+const config = {
   singleQuote: true,
   trailingComma: 'all',
   semi: false,
