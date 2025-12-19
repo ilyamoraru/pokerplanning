@@ -9,7 +9,7 @@ export const useApi = () => {
    * @return AsyncData<{ redirectUrl: string }>
    */
   const getOAuthUrl = async () => {
-    return $api<{ redirectUrl: string }>('/auth/', { baseURL: apiBaseUrl })
+    return $api<{ redirectUrl: string }>('/secured/user', { baseURL: apiBaseUrl })
   }
 
   /**
