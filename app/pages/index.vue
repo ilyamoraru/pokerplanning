@@ -9,7 +9,7 @@
 
 <script lang="ts" setup>
 definePageMeta({
-  middleware: ['task']
+  middleware: ['auth', 'task']
 })
 
 const { tasksToEstimate } = storeToRefs(useTaskStore())

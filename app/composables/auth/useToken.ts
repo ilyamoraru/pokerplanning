@@ -1,27 +1,25 @@
 export const useToken = () => {
-  const TOKEN_KEY = 'auth_token'
+  const authToken = useCookie<string | null>('auth_token', {
+    maxAge: 60 * 60 * 24 * 7, // 7 дней
+    secure: true,
+    sameSite: 'lax',
+    path: '/'
+  })
 
   const getToken = (): string | null => {
-    if (import.meta.client) {
-      return localStorage.getItem(TOKEN_KEY)
-    }
-    return null
+    return authToken.value
   }
 
   const setToken = (token: string) => {
-    if (import.meta.client) {
-      localStorage.setItem(TOKEN_KEY, token)
-    }
+    authToken.value = token
   }
 
   const removeToken = () => {
-    if (import.meta.client) {
-      localStorage.removeItem(TOKEN_KEY)
-    }
+    authToken.value = null
   }
 
   const hasToken = (): boolean => {
-    return !!getToken()
+    return !!authToken.value
   }
 
   return {

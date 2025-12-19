@@ -4,15 +4,8 @@ export default defineNuxtRouteMiddleware(async (to) => {
   const { hasToken } = useToken()
   const { getUser, isAuthenticated } = useUserStore()
 
-  const publicPages = ['/auth']
-  const isPublicPage = publicPages.includes(to.path)
-
-  if (isPublicPage) {
-    return
-  }
-
   if (!hasToken()) {
-    return navigateTo(`/auth?redirect=${encodeURIComponent(to.fullPath)}`)
+    return navigateTo(`/auth/?redirect=${encodeURIComponent(to.fullPath)}`)
   }
 
   if (!isAuthenticated) {
@@ -20,7 +13,7 @@ export default defineNuxtRouteMiddleware(async (to) => {
       await getUser()
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
-      return navigateTo(`/auth?redirect=${encodeURIComponent(to.fullPath)}`)
+      return navigateTo(`/auth/?redirect=${encodeURIComponent(to.fullPath)}`)
     }
   }
 })

@@ -16,7 +16,7 @@
 <script lang="ts" setup>
 definePageMeta({
   layout: 'vote',
-  middleware: ['task']
+  middleware: ['auth', 'task']
 })
 const { user } = storeToRefs(useUserStore())
 const route = useRoute()

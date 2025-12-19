@@ -4,64 +4,21 @@ export const useAuth = () => {
   const userStore = useUserStore()
   const { hasToken, removeToken, setToken } = useToken()
   const router = useRouter()
-  const route = useRoute()
 
   const isAuthenticated = computed(() => userStore.isAuthenticated)
 
   const user = computed(() => userStore.user)
 
   /**
-   * Получить OAuth URL для авторизации
-   * @param redirectAfterAuth - URL для редиректа после успешной авторизации
-   */
-  const getOAuthUrl = (redirectAfterAuth?: string): string | null => {
-    const youtrackOAuthUrl = import.meta.env.VITE_YOUTRACK_OAUTH_URL
-
-    if (!youtrackOAuthUrl) {
-      console.error('VITE_YOUTRACK_OAUTH_URL не настроен в .env')
-      return null
-    }
-
-    // Определяем куда вернуться после авторизации
-    const redirectPath = redirectAfterAuth || route.fullPath
-
-    // Callback URL - наша страница /auth
-    const callbackUrl = `${window.location.origin}/auth?redirect=${encodeURIComponent(redirectPath)}`
-
-    // Формируем OAuth URL
-    return `${youtrackOAuthUrl}?redirect_uri=${encodeURIComponent(callbackUrl)}`
-  }
-
-  /**
-   * Инициировать процесс авторизации (редирект на OAuth)
-   * @param redirectAfterAuth - URL для редиректа после успешной авторизации
-   */
-  const login = (redirectAfterAuth?: string) => {
-    const oauthUrl = getOAuthUrl(redirectAfterAuth)
-
-    if (oauthUrl) {
-      window.location.href = oauthUrl
-    } else {
-      console.error('Не удалось получить OAuth URL')
-    }
-  }
-
-  /**
    * Выход из системы
    * @param redirectToAuth - Редиректить ли на страницу авторизации после выхода
    */
   const logout = async (redirectToAuth = true) => {
-    // Очищаем store и токен
     userStore.logout()
 
     if (redirectToAuth) {
       await router.push('/auth')
     }
-  }
-
-  const redirectToAuth = async () => {
-    const currentPath = route.fullPath
-    await router.push(`/auth?redirect=${encodeURIComponent(currentPath)}`)
   }
 
   /**
@@ -73,18 +30,19 @@ export const useAuth = () => {
       const { getUserByCode } = useApi()
 
       // Обмениваем code на userData с токеном
-      const userData = await getUserByCode(code)
+      const { data: userData, error } = await getUserByCode(code)
 
-      // Проверяем что получили токен
-      if (!userData.token) {
+      if (error.value || !userData.value) {
+        throw new Error(error.value?.message || 'Не удалось получить пользователя от API')
+      }
+
+      if (!userData.value.token) {
         throw new Error('Токен не получен от API')
       }
 
-      // Сохраняем токен
-      setToken(userData.token)
+      setToken(userData.value.token)
 
-      // Сохраняем данные пользователя в store
-      userStore.setUser(userData)
+      userStore.setUser(userData.value)
 
       return true
     } catch (error) {
@@ -99,17 +57,14 @@ export const useAuth = () => {
    * Используется в middleware для восстановления сессии
    */
   const checkAndLoadUser = async (): Promise<boolean> => {
-    // Если нет токена, пользователь не авторизован
     if (!hasToken()) {
       return false
     }
 
-    // Если пользователь уже загружен, всё ок
     if (userStore.user) {
       return true
     }
 
-    // Загружаем пользователя
     try {
       await userStore.getUser()
       return !!userStore.user
@@ -120,18 +75,10 @@ export const useAuth = () => {
   }
 
   return {
-    // Состояние
     isAuthenticated,
     user,
-
-    // Методы авторизации
-    login,
     logout,
     handleAuthCallback,
-
-    // Утилиты
-    redirectToAuth,
-    getOAuthUrl,
     checkAndLoadUser
   }
 }

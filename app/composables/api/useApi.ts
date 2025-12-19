@@ -1,21 +1,19 @@
 export const useApi = () => {
-  const apiBaseUrl = import.meta.env.VITE_API_BASE_URL
+  /**
+   * получаем OAuth URL от API бэка
+   * @return AsyncData<{ redirectUrl: string }>
+   */
+  const getOAuthUrl = async () => {
+    return useFetch<{ redirectUrl: string }>('/api/auth/')
+  }
 
   /**
-   * запрос идет на ВНЕШНИЙ API (VITE_API_BASE_URL)
-   * @param code - OAuth code из YouTrack redirect
-   * @return Promise<User> - { id, token, name, avatar }
+   * получаем пользователя по OAuth code
+   * @param code - OAuth code от YouTrack
+   * @return AsyncData<User> - { id, token, name, avatar }
    */
-  const getUserByCode = async (code: string): Promise<User> => {
-    if (!apiBaseUrl) {
-      throw new Error('VITE_API_BASE_URL не настроен в .env')
-    }
-
-    const response = await $fetch<User>(`${apiBaseUrl}/users/${code}`, {
-      method: 'GET'
-    })
-
-    return response
+  const getUserByCode = async (code: string) => {
+    return useFetch<User>(`/api/secured/user/${code}`)
   }
 
   /**
@@ -73,6 +71,7 @@ export const useApi = () => {
   }
 
   return {
+    getOAuthUrl,
     getUserByCode,
     fetchUser,
     fetchAllTasksList,
