@@ -50,7 +50,11 @@ onUnmounted(() => {
 const gameIsDone = ref(false)
 const gameIsEndingByUser = ref(false)
 const gameIsEnding = ref(false)
-
+const resetGame = () => {
+  gameIsDone.value = false
+  gameIsEndingByUser.value = false
+  gameIsEnding.value = false
+}
 //ИГРОК
 const currentGamer = ref<Gamer>({
   ...props.user,
@@ -62,7 +66,7 @@ const roomGamers = ref<Gamer[]>([])
  * получение индекса игрока
  * @param user
  */
-const getGamerIndex = (user: User) => {
+const getGamerIndex = (user: Gamer) => {
   return roomGamers.value.findIndex((item) => item.id === user.id)
 }
 /**
@@ -73,14 +77,14 @@ const addGamerInRoom = (gamer: Gamer) => {
   const index = getGamerIndex(gamer)
 
   if (index >= 0) return
-
+  resetGame()
   roomGamers.value.push(gamer)
 }
 /**
  * удаление игрока
  * @param user
  */
-const removeGamerFromRoom = (user: User) => {
+const removeGamerFromRoom = (user: Gamer) => {
   if (user.id === props.user.id) return
 
   const index = getGamerIndex(user)
