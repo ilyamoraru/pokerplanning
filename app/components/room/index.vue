@@ -50,7 +50,11 @@ onUnmounted(() => {
 const gameIsDone = ref(false)
 const gameIsEndingByUser = ref(false)
 const gameIsEnding = ref(false)
-
+const resetGame = () => {
+  gameIsDone.value = false
+  gameIsEndingByUser.value = false
+  gameIsEnding.value = false
+}
 //ИГРОК
 const currentGamer = ref<Gamer>({
   ...props.user,
@@ -73,7 +77,7 @@ const addGamerInRoom = (gamer: Gamer) => {
   const index = getGamerIndex(gamer)
 
   if (index >= 0) return
-
+  resetGame()
   roomGamers.value.push(gamer)
 }
 /**
