@@ -32,9 +32,11 @@ const tableColumns: TableColumn<Task>[] = [
     accessorKey: 'url',
     header: 'Ссылка',
     cell: ({ row }) => {
-      return h('a', { href: row.getValue('url'), target: '_blank' }, [
-        h(iconComponent, { name: 'mdi:external-link', size: 20 })
-      ])
+      return h(
+        'a',
+        { href: row.getValue('url'), target: '_blank', class: 'flex items-center gap-1' },
+        [h('p', {}, 'YouTrack'), h(iconComponent, { name: 'mdi:external-link', size: 20 })]
+      )
     },
     meta: { class: { td: 'cursor-pointer' } }
   }
