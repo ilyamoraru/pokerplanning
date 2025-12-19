@@ -94,7 +94,7 @@ const gamerFields = computed(() => {
 
       return acc
     },
-    [[], [], [], []] as [User[], User[], User[], User[]]
+    [[], [], [], []] as [Gamer[], Gamer[], Gamer[], Gamer[]]
   )
 })
 

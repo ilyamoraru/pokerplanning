@@ -62,7 +62,7 @@ const roomGamers = ref<Gamer[]>([])
  * получение индекса игрока
  * @param user
  */
-const getGamerIndex = (user: User) => {
+const getGamerIndex = (user: Gamer) => {
   return roomGamers.value.findIndex((item) => item.id === user.id)
 }
 /**
@@ -80,7 +80,7 @@ const addGamerInRoom = (gamer: Gamer) => {
  * удаление игрока
  * @param user
  */
-const removeGamerFromRoom = (user: User) => {
+const removeGamerFromRoom = (user: Gamer) => {
   if (user.id === props.user.id) return
 
   const index = getGamerIndex(user)

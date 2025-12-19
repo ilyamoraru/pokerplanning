@@ -2,14 +2,9 @@ import type { Gamer, User } from '#shared/types/user'
 
 export const UserToGamer = (user: User): Gamer => {
   return {
-    ...user,
+    id: user.id,
+    name: user.id,
+    avatar: user.avatar,
     card: undefined
   }
-}
-
-export const GamerToUser = (gamer: Gamer): User => {
-  const user = { ...gamer }
-  delete user.card
-
-  return user
 }
