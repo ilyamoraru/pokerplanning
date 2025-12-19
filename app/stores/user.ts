@@ -15,17 +15,17 @@ export const useUserStore = defineStore('user', () => {
 
     // Если ошибка 401, очищаем пользователя и токен
     if (error.value?.statusCode === 401) {
-      user.value = null
+      user.value = undefined
       removeToken()
     }
   }
 
-  const setUser = (userData: User | null) => {
+  const setUser = (userData: User | undefined) => {
     user.value = userData
   }
 
   const logout = () => {
-    user.value = null
+    user.value = undefined
     removeToken()
   }
 
