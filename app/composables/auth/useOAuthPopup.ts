@@ -9,9 +9,7 @@ export const useOAuthPopup = () => {
    * @param oauthUrl - URL для авторизации (от API бэка)
    * @returns Promise<{ token: string, name: string, id: string, avatar: string }> - разрешается после успешной авторизации
    */
-  const openOAuthPopup = (
-    oauthUrl: string
-  ): Promise<{ token: string; name: string; id: string; avatar: string }> => {
+  const openOAuthPopup = (oauthUrl: string): Promise<User> => {
     return new Promise((resolve, reject) => {
       // Размеры popup окна
       const width = 600
@@ -67,7 +65,7 @@ export const useOAuthPopup = () => {
             name: event.data.name,
             id: event.data.id,
             avatar: event.data.avatar
-          })
+          } as User)
         }
 
         if (event.data.type === 'oauth_error') {
