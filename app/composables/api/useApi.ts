@@ -2,13 +2,14 @@ export const useApi = () => {
   const {
     public: { apiBaseUrl }
   } = useRuntimeConfig()
+  const { $api } = useNuxtApp()
 
   /**
    * получаем OAuth URL от API бэка
    * @return AsyncData<{ redirectUrl: string }>
    */
   const getOAuthUrl = async () => {
-    return useFetch<{ redirectUrl: string }>('/auth/', { baseURL: apiBaseUrl })
+    return $api<{ redirectUrl: string }>('/auth/', { baseURL: apiBaseUrl })
   }
 
   /**
@@ -17,7 +18,7 @@ export const useApi = () => {
    * @return AsyncData<User> - { id, token, name, avatar }
    */
   const getUserByCode = async (code: string) => {
-    return useFetch<User>(`/secured/user/${code}`, { baseURL: apiBaseUrl })
+    return $api<User>(`/secured/user/${code}`, { baseURL: apiBaseUrl })
   }
 
   /**
@@ -25,7 +26,7 @@ export const useApi = () => {
    * @return Promise<User>
    */
   const fetchUser = () => {
-    return useFetch<User>('/secured/user', { baseURL: apiBaseUrl })
+    return $api<User>('/secured/user', { baseURL: apiBaseUrl })
   }
 
   /**
@@ -33,7 +34,7 @@ export const useApi = () => {
    * @return Promise<Task>
    */
   const fetchAllTasksList = async () => {
-    return useFetch<Task[]>('/secured/tasks', { baseURL: apiBaseUrl })
+    return $api<Task[]>('/secured/tasks', { baseURL: apiBaseUrl })
   }
 
   /**
@@ -41,7 +42,7 @@ export const useApi = () => {
    * @return Promise<Task>
    */
   const fetchReferenceTasks = async () => {
-    return useFetch<Task[]>('/secured/tasks/reference', { baseURL: apiBaseUrl })
+    return $api<Task[]>('/secured/tasks/reference', { baseURL: apiBaseUrl })
   }
 
   /**
@@ -49,7 +50,7 @@ export const useApi = () => {
    * @param taskId
    */
   const putTaskToAnalytics = async (taskId: Task['id']) => {
-    return useFetch('/secured/tasks/return', {
+    return $api('/secured/tasks/return', {
       baseURL: apiBaseUrl,
       method: 'PUT',
       body: {
@@ -71,7 +72,7 @@ export const useApi = () => {
     estimation: number,
     isReference?: boolean
   ) => {
-    return useFetch('/secured/tasks/estimate', {
+    return $api('/secured/tasks/estimate', {
       method: 'PUT',
       body: {
         baseURL: apiBaseUrl,
@@ -88,7 +89,7 @@ export const useApi = () => {
    * @return Promise<Sprint>
    */
   const getSprintsList = async () => {
-    return useFetch<Sprint[]>('/secured/sprints', { baseURL: apiBaseUrl })
+    return $api<Sprint[]>('/secured/sprints', { baseURL: apiBaseUrl })
   }
 
   return {
