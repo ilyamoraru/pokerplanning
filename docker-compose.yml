@@ -1,20 +1,23 @@
 services:
   nuxt-app:
-    image: nuxt-docker
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: ghcr.io/eugene-khorev/pokerplanning:latest
+#    image: nuxt-docker
+#    build:
+#      context: .
+#      dockerfile: Dockerfile
     ports:
       - "3000:3000" # Forward port 3000 on host to port 3000 in container
-    volumes:
-      - .:/app # Mount the local directory to the container for hot reloading
-      - /app/node_modules # Keep node_modules inside the container
+#    volumes:
+#      - .:/app # Mount the local directory to the container for hot reloading
+#      - /app/node_modules # Keep node_modules inside the container
     environment:
       HOST: 0.0.0.0 # Essential for Nuxt to be accessible outside the container's localhost
+      NUXT_PUBLIC_API_BASE: http://195.133.197.95:8000
 #    command: npm run dev # Use your development script
+#    command: sleep infinity
     networks:
       - poker-frontend
-#     restart: on-failure:5
+    restart: on-failure:5
 #    restart: always
 
 networks:

@@ -3,8 +3,8 @@ FROM node:24-alpine AS build
 WORKDIR /app
 COPY package*.json ./
 RUN npm install
-RUN npm run build
 COPY . .
+RUN npm run build
 
 # Stage 2: Run the application
 FROM node:24-alpine AS final
