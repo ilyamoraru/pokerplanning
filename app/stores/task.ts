@@ -1,5 +1,3 @@
-import { id } from '@nuxt/ui/locale'
-
 export const useTaskStore = defineStore('task', () => {
   const { fetchReferenceTasks, fetchAllTasksList } = useApi()
   const referenceTasksList = ref<Task[] | undefined>(undefined)
