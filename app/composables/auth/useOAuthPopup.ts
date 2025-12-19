@@ -94,6 +94,7 @@ export const useOAuthPopup = () => {
    * Проверяет, открыта ли страница в popup окне
    */
   const isPopup = () => {
+    if (import.meta.server) return false
     return window.opener !== null
   }
 
