@@ -1,7 +1,6 @@
 export const useToken = () => {
   const authToken = useCookie<string | null>('auth_token', {
     maxAge: 60 * 60 * 24 * 7, // 7 дней
-    secure: true,
     sameSite: 'lax',
     path: '/'
   })
