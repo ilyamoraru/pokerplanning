@@ -8,7 +8,7 @@ export const useApi = () => {
    * @return AsyncData<{ redirectUrl: string }>
    */
   const getOAuthUrl = async () => {
-    return useFetch<{ redirectUrl: string }>('/api/auth/')
+    return useFetch<{ redirectUrl: string }>('/auth/', { baseURL: apiBaseUrl })
   }
 
   /**
@@ -17,7 +17,7 @@ export const useApi = () => {
    * @return AsyncData<User> - { id, token, name, avatar }
    */
   const getUserByCode = async (code: string) => {
-    return useFetch<User>(`/api/secured/user/${code}`)
+    return useFetch<User>(`/secured/user/${code}`, { baseURL: apiBaseUrl })
   }
 
   /**
