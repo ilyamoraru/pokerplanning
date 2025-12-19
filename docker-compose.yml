@@ -9,7 +9,7 @@ services:
     ports:
       - "3000:3000"
     environment:
-      NUXT_PUBLIC_API_BASE: http://195.133.197.95:8000
+      NUXT_PUBLIC_API_BASE_URL: http://195.133.197.95:8000
     networks:
       - poker-frontend
 #    restart: on-failure:5
