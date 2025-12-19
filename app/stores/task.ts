@@ -1,3 +1,5 @@
+import { id } from '@nuxt/ui/locale'
+
 export const useTaskStore = defineStore('task', () => {
   const { fetchReferenceTasks, fetchAllTasksList } = useApi()
   const referenceTasksList = ref<Task[] | undefined>(undefined)
@@ -28,24 +30,52 @@ export const useTaskStore = defineStore('task', () => {
   })
 
   const getReferenceTasks = async () => {
-    if (referenceTasksList.value) return
+    try {
+      if (referenceTasksList.value) return
 
-    loadingReferenceTasks.value = true
-    const { data } = await fetchReferenceTasks()
+      loadingReferenceTasks.value = true
+      const { data } = await fetchReferenceTasks()
 
-    if (data.value) {
-      referenceTasksList.value = data.value
+      if (data.value) {
+        referenceTasksList.value = data.value
+      }
+    } catch (error) {
+      console.error('FAILED TO LOAD REFERENCE TASKS ', error)
+      referenceTasksList.value = []
+    } finally {
+      loadingReferenceTasks.value = false
     }
-    loadingReferenceTasks.value = false
   }
 
   //tasks to estimate
   const tasksToEstimate = ref<Task[] | undefined>(undefined)
   const getTasksToEstimate = async () => {
-    const { data } = await fetchAllTasksList()
+    try {
+      const { data } = await fetchAllTasksList()
 
-    if (data.value) {
-      tasksToEstimate.value = data.value
+      if (data.value) {
+        tasksToEstimate.value = data.value
+      }
+    } catch (error) {
+      console.error('FAILED TO LOAD TASKS ', error)
+    }
+  }
+  const roomTask = ref<Task>()
+  const getRoomTask = (idReadable: Task['idReadable']) => {
+    if (!tasksToEstimate.value)
+      throw createError({ statusCode: 404, statusMessage: 'Page Not Found' })
+
+    const task = tasksToEstimate.value.find((task) => task.idReadable === idReadable)
+
+    if (task) {
+      roomTask.value = task
+    } else {
+      if (import.meta.server) {
+        throw createError({ statusCode: 404, statusMessage: 'Page Not Found' })
+      }
+      if (import.meta.client) {
+        return useRouter().push('/404')
+      }
     }
   }
 
@@ -55,6 +85,8 @@ export const useTaskStore = defineStore('task', () => {
     getReferenceTasks,
     referenceTasks,
     getTasksToEstimate,
-    tasksToEstimate
+    tasksToEstimate,
+    roomTask,
+    getRoomTask
   }
 })

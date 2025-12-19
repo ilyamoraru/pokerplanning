@@ -41,18 +41,29 @@
       </div>
       <div />
     </div>
-    <UContainer as="footer" class="fixed bottom-4 left-0 left-1/2 -translate-x-1/2 bg-white p-4">
-      <CardDesk v-if="!gameIsDone" :gamer-vote="currentGamer?.card" @vote="onGamerVote" />
-      <RoomResults v-else :gamers="allGamers" />
+    <UContainer
+      class="fixed flex top-[var(--ui-header-height)] right-0 left-1/2 -translate-x-1/2 bg-white p-4"
+    >
+      <UiTitle severity="h2" class="">{{ taskName }}</UiTitle>
+      <UButton size="xl" color="warning" class="ml-auto" @click="emit('toAnalytics')">
+        Отправить в аналитику
+      </UButton>
+    </UContainer>
+    <UContainer
+      as="footer"
+      class="border border-neutral-200 border-b-0 rounded-b-none rounded fixed bottom-0 left-0 left-1/2 -translate-x-1/2 bg-white p-4"
+    >
+      <CardDesk v-if="!gameIsDone" :gamer-vote="currentGamer?.card" @vote="emit('vote', $event)" />
+      <RoomResults v-else :gamers="allGamers" @save-estimate="emit('saveEstimate', $event)" />
     </UContainer>
   </div>
 </template>
 
 <script lang="ts" setup>
 const props = defineProps<{
+  taskName: Task['title']
   gamers: Gamer[]
   currentGamer: Gamer
-  room: string
   gameIsDone: boolean
 }>()
 const emit = defineEmits<{
@@ -60,6 +71,8 @@ const emit = defineEmits<{
   (e: 'revealCards'): void
   (e: 'update:gameIsDone', value: boolean): void
   (e: 'resetGame'): void
+  (e: 'toAnalytics'): void
+  (e: 'saveEstimate', estimate: number): void
 }>()
 
 const maxUsersOnDirection = 4
@@ -81,7 +94,7 @@ const gamerFields = computed(() => {
 
       return acc
     },
-    [[], [], [], []] as [User[], User[], User[], User[]]
+    [[], [], [], []] as [Gamer[], Gamer[], Gamer[], Gamer[]]
   )
 })
 
@@ -92,10 +105,6 @@ const revealCards = () => {
 const resetGame = () => {
   emit('update:gameIsDone', false)
   emit('resetGame')
-}
-
-const onGamerVote = (card?: Card) => {
-  emit('vote', card)
 }
 </script>
 

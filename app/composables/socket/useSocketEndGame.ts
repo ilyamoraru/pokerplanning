@@ -8,6 +8,8 @@ export const useSocketEndGame = (room: string) => {
    */
   const endGame = () => {
     $socket.emit(SocketMessage.endVote, room)
+    disconnectSocket()
+    router.push('/')
   }
 
   /**

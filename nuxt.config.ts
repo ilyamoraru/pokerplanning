@@ -19,5 +19,13 @@ export default defineNuxtConfig({
       ],
       link: [{ rel: 'icon', href: '/favicon.png' }]
     }
+  },
+  ui: {
+    fonts: false
+  },
+  icon: {
+    serverBundle: {
+      collections: ['mdi', 'lucide']
+    }
   }
 })

@@ -1,6 +1,14 @@
 @import 'tailwindcss';
 @import '@nuxt/ui';
 
+@theme {
+  --font-sans: 'Public Sans', sans-serif;
+}
+
 button {
   cursor: pointer;
+}
+
+button:disabled {
+  cursor: not-allowed;
 }

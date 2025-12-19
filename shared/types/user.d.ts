@@ -5,7 +5,7 @@ export type User = {
   avatar: string
 }
 
-export type Gamer = User & {
+export type Gamer = Omit<User, 'token'> & {
   card?: Card
 }
 

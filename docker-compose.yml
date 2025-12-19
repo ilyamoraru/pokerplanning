@@ -1,0 +1,20 @@
+services:
+  nuxt-app:
+    container_name: app
+    image: ghcr.io/eugene-khorev/pokerplanning:latest
+#    image: nuxt-docker
+#    build:
+#      context: .
+#      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      NUXT_PUBLIC_API_BASE: http://195.133.197.95:8000
+    networks:
+      - poker-frontend
+#    restart: on-failure:5
+    restart: always
+
+networks:
+  poker-frontend:
+    driver: bridge
