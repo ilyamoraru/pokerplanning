@@ -6,7 +6,7 @@
     </div>
     <div v-else-if="error" class="text-center text-red-500">
       <div class="text-xl">{{ error }}</div>
-      <button @click="router.push('/')" class="mt-4 px-4 py-2 bg-blue-500 text-white rounded">
+      <button class="mt-4 px-4 py-2 bg-blue-500 text-white rounded" @click="router.push('/')">
         На главную
       </button>
     </div>
@@ -14,8 +14,8 @@
       <div class="text-2xl mb-4">Требуется авторизация</div>
       <div class="text-gray-500 mb-6">Для продолжения работы необходимо авторизоваться</div>
       <button
-        @click="handleLogin"
         class="px-6 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition"
+        @click="handleLogin"
       >
         Авторизоваться через YouTrack
       </button>

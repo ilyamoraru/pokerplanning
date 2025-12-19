@@ -19,7 +19,6 @@ export default defineNuxtPlugin(() => {
           options.headers = {
             ...(options.headers as Record<string, string>),
             Authorization: `Bearer ${token}`
-            // eslint-disable-line @typescript-eslint/no-explicit-any
           } as any
         }
       }

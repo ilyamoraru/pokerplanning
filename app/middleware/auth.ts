@@ -11,8 +11,8 @@ export default defineNuxtRouteMiddleware(async (to) => {
   if (!isAuthenticated) {
     try {
       await getUser()
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
+      console.error('Auth middleware has error ', error)
       return navigateTo(`/auth/?redirect=${encodeURIComponent(to.fullPath)}`)
     }
   }

@@ -6,7 +6,6 @@ export const useAuth = () => {
   const router = useRouter()
 
   const isAuthenticated = computed(() => userStore.isAuthenticated)
-
   const user = computed(() => userStore.user)
 
   /**
@@ -46,7 +45,7 @@ export const useAuth = () => {
 
       return true
     } catch (error) {
-      console.error('Ошибка при обработке auth callback:', error)
+      console.error('Ошибка при обработке auth callback: ', error)
       removeToken()
       return false
     }

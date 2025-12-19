@@ -5,6 +5,7 @@ export const useUserStore = defineStore('user', () => {
   const { getToken, removeToken } = useToken()
 
   const user = ref<User | undefined>(undefined)
+  const isAuthenticated = computed(() => !!user.value && !!getToken())
 
   const getUser = async () => {
     const { data, error } = await fetchUser()
@@ -28,8 +29,6 @@ export const useUserStore = defineStore('user', () => {
     user.value = undefined
     removeToken()
   }
-
-  const isAuthenticated = computed(() => !!user.value && !!getToken())
 
   return {
     user,
