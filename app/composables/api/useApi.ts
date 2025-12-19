@@ -1,10 +1,14 @@
 export const useApi = () => {
+  const {
+    public: { apiBaseUrl }
+  } = useRuntimeConfig()
+
   /**
    * получаем пользователя
    * @return Promise<User>
    */
   const fetchUser = () => {
-    return useFetch<User>('/api/secured/user')
+    return useFetch<User>('/secured/user', { baseURL: apiBaseUrl })
   }
 
   /**
@@ -12,7 +16,7 @@ export const useApi = () => {
    * @return Promise<Task>
    */
   const fetchAllTasksList = async () => {
-    return useFetch<Task[]>('/api/secured/tasks')
+    return useFetch<Task[]>('/secured/tasks', { baseURL: apiBaseUrl })
   }
 
   /**
@@ -20,7 +24,7 @@ export const useApi = () => {
    * @return Promise<Task>
    */
   const fetchReferenceTasks = async () => {
-    return useFetch<Task[]>('/api/secured/tasks/reference')
+    return useFetch<Task[]>('/secured/tasks/reference', { baseURL: apiBaseUrl })
   }
 
   /**
@@ -28,7 +32,8 @@ export const useApi = () => {
    * @param taskId
    */
   const putTaskToAnalytics = async (taskId: Task['id']) => {
-    return useFetch('/api/secured/tasks/return', {
+    return useFetch('/secured/tasks/return', {
+      baseURL: apiBaseUrl,
       method: 'PUT',
       body: {
         taskId
@@ -49,9 +54,10 @@ export const useApi = () => {
     estimation: number,
     isReference?: boolean
   ) => {
-    return useFetch('/api/secured/tasks/estimate', {
+    return useFetch('/secured/tasks/estimate', {
       method: 'PUT',
       body: {
+        baseURL: apiBaseUrl,
         taskId,
         sprintId,
         estimation,
@@ -65,7 +71,7 @@ export const useApi = () => {
    * @return Promise<Sprint>
    */
   const getSprintsList = async () => {
-    return useFetch<Sprint[]>('/api/secured/sprints')
+    return useFetch<Sprint[]>('/secured/sprints', { baseURL: apiBaseUrl })
   }
 
   return {
