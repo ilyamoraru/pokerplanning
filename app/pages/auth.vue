@@ -27,8 +27,9 @@
 const route = useRoute()
 const router = useRouter()
 const { handleAuthCallback } = useAuth()
-const { getOAuthUrl } = useApi()
+const { fetchUser } = useApi()
 const { isPopup, notifySuccess, notifyError, openOAuthPopup } = useOAuthPopup()
+const { getOAuthUrl: getSavedOAuthUrl, clearOAuthUrl } = useOAuthUrl()
 
 const loading = ref(false)
 const error = ref<string | null>(null)
@@ -40,14 +41,27 @@ const handleLogin = async () => {
   error.value = null
 
   try {
-    const { data, error: apiError } = await getOAuthUrl()
+    let oauthUrl = getSavedOAuthUrl()
 
-    if (apiError.value || !data.value?.redirectUrl) {
-      throw new Error(apiError.value?.message || 'Не удалось получить OAuth URL от API')
+    // Если OAuth URL еще не сохранен, делаем запрос для получения 401 с redirectUrl
+    if (!oauthUrl) {
+      try {
+        await fetchUser()
+        // Если запрос успешен, значит пользователь уже авторизован
+        throw new Error('Пользователь уже авторизован')
+      } catch (err) {
+        // Ожидаем 401, который сохранит redirectUrl в interceptor
+        oauthUrl = getSavedOAuthUrl()
+        if (!oauthUrl) {
+          throw new Error('Не удалось получить OAuth URL')
+        }
+      }
     }
 
     // Открываем popup с OAuth URL
-    const { token, id, avatar, name } = await openOAuthPopup(data.value.redirectUrl)
+    const { token, id, avatar, name } = await openOAuthPopup(oauthUrl)
+
+    clearOAuthUrl()
 
     const { setToken } = useToken()
     const userStore = useUserStore()

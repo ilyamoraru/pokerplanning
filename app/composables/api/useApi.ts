@@ -5,14 +5,6 @@ export const useApi = () => {
   const { $api } = useNuxtApp()
 
   /**
-   * получаем OAuth URL от API бэка
-   * @return AsyncData<{ redirectUrl: string }>
-   */
-  const getOAuthUrl = async () => {
-    return $api<{ redirectUrl: string }>('/auth/', { baseURL: apiBaseUrl })
-  }
-
-  /**
    * получаем пользователя по OAuth code
    * @param code - OAuth code от YouTrack
    * @return AsyncData<User> - { id, token, name, avatar }
@@ -93,7 +85,6 @@ export const useApi = () => {
   }
 
   return {
-    getOAuthUrl,
     getUserByCode,
     fetchUser,
     fetchAllTasksList,
