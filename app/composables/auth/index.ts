@@ -1,4 +1,4 @@
 export * from './useAuth'
 export * from './useToken'
-export * from './useOAuthPopup'
+export * from './useOAuthWindow'
 export * from './useOAuthUrl'

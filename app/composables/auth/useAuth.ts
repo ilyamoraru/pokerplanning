@@ -24,7 +24,7 @@ export const useAuth = () => {
    * Обработка OAuth callback (обмен code на токен и загрузка пользователя)
    * @param code - OAuth code из URL параметра
    */
-  const handleAuthCallback = async (code: string): Promise<boolean> => {
+  const handleAuthCallback = async (code: string): Promise<User | false> => {
     try {
       const { getUserByCode } = useApi()
 
@@ -41,9 +41,7 @@ export const useAuth = () => {
 
       setToken(userData.value.token)
 
-      userStore.setUser(userData.value)
-
-      return true
+      return userData.value
     } catch (error) {
       console.error('Ошибка при обработке auth callback: ', error)
       removeToken()
