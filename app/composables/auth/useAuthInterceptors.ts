@@ -1,4 +1,3 @@
-import { useOAuthUrl, useToken } from '~/composables'
 import type { FetchOptions, FetchResponse } from 'ofetch'
 
 export const useAuthInterceptors = () => {

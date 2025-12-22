@@ -29,6 +29,7 @@ const props = defineProps<{
   sprints: Sprint[]
   task: Task
 }>()
+const toast = useToast()
 
 //ОБЩЕЕ СОСТОЯНИЕ ИГРЫ
 const room = computed(() => props.task.idReadable)
@@ -79,17 +80,29 @@ const addGamerInRoom = (gamer: Gamer) => {
   if (index >= 0) return
   resetGame()
   roomGamers.value.push(gamer)
+  toast.add({
+    title: `${gamer.name} присоединился`,
+    avatar: {
+      src: gamer.avatar
+    }
+  })
 }
 /**
  * удаление игрока
- * @param user
+ * @param gamer
  */
-const removeGamerFromRoom = (user: Gamer) => {
-  if (user.id === props.user.id) return
+const removeGamerFromRoom = (gamer: Gamer) => {
+  if (gamer.id === props.user.id) return
 
-  const index = getGamerIndex(user)
+  const index = getGamerIndex(gamer)
 
   roomGamers.value.splice(index, 1)
+  toast.add({
+    title: `${gamer.name} покинул игру`,
+    avatar: {
+      src: gamer.avatar
+    }
+  })
 }
 
 //ГОЛОСОВАНИЕ
