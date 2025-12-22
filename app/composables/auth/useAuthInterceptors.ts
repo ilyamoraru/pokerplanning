@@ -1,11 +1,12 @@
-import { useToken, useOAuthUrl } from '~/composables'
+import { useOAuthUrl, useToken } from '~/composables'
+import type { FetchOptions, FetchResponse } from 'ofetch'
 
-export default defineNuxtPlugin(() => {
+export const useAuthInterceptors = () => {
   const { getToken } = useToken()
   const UNAUTHORIZED_STATUS = 401
 
-  const fetchInterceptor = $fetch.create({
-    onRequest({ options }) {
+  const interceptors = {
+    onRequest({ options }: { options: FetchOptions }) {
       const token = getToken()
 
       if (token) {
@@ -23,8 +24,7 @@ export default defineNuxtPlugin(() => {
         }
       }
     },
-
-    async onResponseError({ response }) {
+    async onResponseError({ response }: { response: FetchResponse<any> }) {
       if (response.status === UNAUTHORIZED_STATUS) {
         const { removeToken } = useToken()
         const { setOAuthUrl } = useOAuthUrl()
@@ -51,11 +51,9 @@ export default defineNuxtPlugin(() => {
         await navigateTo(`/auth/?redirect=${encodeURIComponent(currentPath)}`)
       }
     }
-  })
+  }
 
   return {
-    provide: {
-      api: fetchInterceptor
-    }
+    interceptors
   }
-})
+}
