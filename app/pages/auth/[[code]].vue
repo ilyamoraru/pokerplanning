@@ -59,9 +59,9 @@ const handleLogin = async () => {
       openOAuthWindow(oauthUrl)
         .then((res: User) => {
           const { token } = res
-          clearOAuthUrl()
           setToken(token)
           setUser(res)
+          clearOAuthUrl()
           redirectToRedirectUrl()
         })
         .catch((error) => {
@@ -81,7 +81,7 @@ const handleLogin = async () => {
 
 const onYouTrackAuthCallback = async () => {
   const inPopupMode = isWindowOpened()
-  const code = route.query.code as string
+  const code = route.params.code as string
   if (!code) return
 
   loading.value = true
