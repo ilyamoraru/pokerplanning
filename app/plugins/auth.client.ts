@@ -28,26 +28,19 @@ export default defineNuxtPlugin(() => {
       if (response.status === UNAUTHORIZED_STATUS) {
         const { removeToken } = useToken()
         const { setOAuthUrl } = useOAuthUrl()
-
         removeToken()
-
-        // Отладка: смотрим что приходит в ответе
-        console.log('401 Response:', {
-          _data: response._data,
-          status: response.status,
-          statusText: response.statusText
-        })
 
         // Сохраняем redirectUrl из тела ответа
         const responseData = response._data as { redirectUrl?: string }
+
         if (responseData?.redirectUrl) {
           setOAuthUrl(responseData.redirectUrl)
         }
 
         // Если мы уже на странице /auth, не делаем редирект
-        // (там мы намеренно получаем 401 для извлечения redirectUrl)
         const currentPathname = window.location.pathname
-        if (currentPathname === '/auth') {
+
+        if (currentPathname.startsWith('/auth')) {
           return
         }
 
