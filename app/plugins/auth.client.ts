@@ -1,4 +1,4 @@
-import { useToken } from '~/composables'
+import { useToken, useOAuthUrl } from '~/composables'
 
 export default defineNuxtPlugin(() => {
   const { getToken } = useToken()
@@ -27,7 +27,22 @@ export default defineNuxtPlugin(() => {
     async onResponseError({ response }) {
       if (response.status === UNAUTHORIZED_STATUS) {
         const { removeToken } = useToken()
+        const { setOAuthUrl } = useOAuthUrl()
         removeToken()
+
+        // Сохраняем redirectUrl из тела ответа
+        const responseData = response._data as { redirectUrl?: string }
+
+        if (responseData?.redirectUrl) {
+          setOAuthUrl(responseData.redirectUrl)
+        }
+
+        // Если мы уже на странице /auth, не делаем редирект
+        const currentPathname = window.location.pathname
+
+        if (currentPathname.startsWith('/auth')) {
+          return
+        }
 
         // Сохраняем текущий путь для возврата после OAuth
         const currentPath = window.location.pathname + window.location.search

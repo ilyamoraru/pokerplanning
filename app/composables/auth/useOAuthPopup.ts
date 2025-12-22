@@ -106,7 +106,9 @@ export const useOAuthPopup = () => {
           {
             type: 'oauth_success',
             token,
-            user
+            name: user.name,
+            id: user.id,
+            avatar: user.avatar
           },
           window.location.origin
         )

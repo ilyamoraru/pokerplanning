@@ -1,19 +1,9 @@
-import { useToken } from '~/composables'
+import { useAuth } from '~/composables'
 
 export default defineNuxtRouteMiddleware(async (to) => {
-  const { hasToken } = useToken()
-  const { getUser, isAuthenticated } = useUserStore()
+  const { checkAndLoadUser } = useAuth()
 
-  if (!hasToken()) {
+  if (!(await checkAndLoadUser())) {
     return navigateTo(`/auth/?redirect=${encodeURIComponent(to.fullPath)}`)
-  }
-
-  if (!isAuthenticated) {
-    try {
-      await getUser()
-    } catch (error) {
-      console.error('Auth middleware has error ', error)
-      return navigateTo(`/auth/?redirect=${encodeURIComponent(to.fullPath)}`)
-    }
   }
 })

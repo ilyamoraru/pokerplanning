@@ -52,14 +52,9 @@ export const useAuth = () => {
   }
 
   /**
-   * Проверить и загрузить пользователя если есть токен
-   * Используется в middleware для восстановления сессии
+   * Загрузить пользователя если его еще нет
    */
-  const checkAndLoadUser = async (): Promise<boolean> => {
-    if (!hasToken()) {
-      return false
-    }
-
+  const loadUser = async (): Promise<boolean> => {
     if (userStore.user) {
       return true
     }
@@ -71,6 +66,18 @@ export const useAuth = () => {
       console.error('Ошибка при загрузке пользователя:', error)
       return false
     }
+  }
+
+  /**
+   * Проверить токен и загрузить пользователя
+   * Используется в middleware для восстановления сессии
+   */
+  const checkAndLoadUser = async (): Promise<boolean> => {
+    if (!hasToken()) {
+      return false
+    }
+
+    return await loadUser()
   }
 
   return {
