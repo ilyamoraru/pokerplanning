@@ -21,7 +21,8 @@ export default defineNuxtConfig({
     }
   },
   ui: {
-    fonts: false
+    fonts: false,
+    colorMode: false
   },
   icon: {
     serverBundle: {
