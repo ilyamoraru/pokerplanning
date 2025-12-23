@@ -5,5 +5,5 @@
 </template>
 
 <script lang="ts" setup>
-const { user } = useUserStore()
+const { user } = storeToRefs(useUserStore())
 </script>
