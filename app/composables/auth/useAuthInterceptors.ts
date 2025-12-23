@@ -36,10 +36,10 @@ export const useAuthInterceptors = () => {
           setOAuthUrl(responseData.redirectUrl)
         }
 
-        // Если мы уже на странице /oauth, не делаем редирект
+        // Если мы уже на странице /auth, не делаем редирект
         const currentPathname = window.location.pathname
 
-        if (currentPathname.startsWith('/oauth')) {
+        if (currentPathname.startsWith('/auth')) {
           return
         }
 
