@@ -3,7 +3,7 @@
     title="Эталонные задачи"
     :close="{ color: 'primary', variant: 'outline' }"
     fullscreen
-    @after:enter="getReferenceTasks"
+    @update:open="$event && getReferenceTasks()"
   >
     <UButton color="neutral" class="cursor-pointer">
       <Icon name="mdi:star" size="16" title="Референсные задачи" />
