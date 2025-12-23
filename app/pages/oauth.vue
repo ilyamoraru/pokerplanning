@@ -40,6 +40,7 @@ const onYouTrackAuthCallback = async () => {
         window.close()
       }, 100)
     }
+    await navigateTo(`/`)
   } catch (err) {
     const errorMessage = err instanceof Error ? err.message : 'Ошибка при авторизации'
 
