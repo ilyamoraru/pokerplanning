@@ -29,8 +29,6 @@ export const useTaskStore = defineStore('task', () => {
 
   const getReferenceTasks = async () => {
     try {
-      if (referenceTasksList.value) return
-
       loadingReferenceTasks.value = true
       const tasksData = await fetchReferenceTasks()
 
