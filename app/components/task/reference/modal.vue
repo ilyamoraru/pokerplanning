@@ -3,7 +3,7 @@
     title="Эталонные задачи"
     :close="{ color: 'primary', variant: 'outline' }"
     fullscreen
-    @update:open="$event && getReferenceTasks()"
+    @after:enter="getReferenceTasks()"
   >
     <UButton color="neutral" class="cursor-pointer">
       <Icon name="mdi:star" size="16" title="Референсные задачи" />
@@ -21,6 +21,4 @@
 <script lang="ts" setup>
 const { getReferenceTasks } = useTaskStore()
 const { referenceTasks, loadingReferenceTasks } = storeToRefs(useTaskStore())
-
-onMounted(() => getReferenceTasks())
 </script>
