@@ -24,7 +24,7 @@ export const useOAuthWindow = () => {
         return window.open(
           oauthUrl,
           'oauth_popup',
-          `width=${width},height=${height},left=${left},top=${top},toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=yes`
+          `width=${width},height=${height},left=${left},top=${top},resizable=yes,scrollbars=yes`
         )
       }
       const closeWindow = (popup: Window) => {
