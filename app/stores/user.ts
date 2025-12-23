@@ -8,16 +8,16 @@ export const useUserStore = defineStore('user', () => {
   const isAuthenticated = computed(() => !!user.value && !!getToken())
 
   const getUser = async () => {
-    const { data, error } = await fetchUser()
+    const userData = await fetchUser().catch((error) => {
+      // Если ошибка 401, очищаем пользователя и токен
+      if (error?.statusCode === 401) {
+        user.value = undefined
+        removeToken()
+      }
+    })
 
-    if (data.value) {
-      user.value = data.value
-    }
-
-    // Если ошибка 401, очищаем пользователя и токен
-    if (error.value?.statusCode === 401) {
-      user.value = undefined
-      removeToken()
+    if (userData) {
+      user.value = userData
     }
   }
 

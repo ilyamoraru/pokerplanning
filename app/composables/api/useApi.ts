@@ -1,10 +1,5 @@
-import { useAuthInterceptors } from '~/composables/auth/useAuthInterceptors'
-
 export const useApi = () => {
-  const {
-    public: { apiBaseUrl }
-  } = useRuntimeConfig()
-  const { interceptors } = useAuthInterceptors()
+  const { $fetch } = useNuxtApp()
 
   /**
    * получаем пользователя по OAuth code
@@ -12,8 +7,7 @@ export const useApi = () => {
    * @return AsyncData<User> - { id, token, name, avatar }
    */
   const getUserByCode = async (code: string) => {
-    const url = `/users/${code}`
-    return useFetch<User>(url, { baseURL: apiBaseUrl })
+    return $fetch<User>(`/users/${code}`)
   }
 
   /**
@@ -21,7 +15,7 @@ export const useApi = () => {
    * @return Promise<User>
    */
   const fetchUser = () => {
-    return useFetch<User>('/secured/user', { baseURL: apiBaseUrl, ...interceptors })
+    return $fetch<User>('/secured/user')
   }
 
   /**
@@ -29,7 +23,7 @@ export const useApi = () => {
    * @return Promise<Task>
    */
   const fetchAllTasksList = async () => {
-    return useFetch<Task[]>('/secured/tasks', { baseURL: apiBaseUrl, ...interceptors })
+    return $fetch<Task[]>('/secured/tasks')
   }
 
   /**
@@ -37,7 +31,7 @@ export const useApi = () => {
    * @return Promise<Task>
    */
   const fetchReferenceTasks = async () => {
-    return useFetch<Task[]>('/secured/tasks/reference', { baseURL: apiBaseUrl, ...interceptors })
+    return $fetch<Task[]>('/secured/tasks/reference')
   }
 
   /**
@@ -45,13 +39,11 @@ export const useApi = () => {
    * @param taskId
    */
   const putTaskToAnalytics = async (taskId: Task['id']) => {
-    return useFetch('/secured/tasks/return', {
-      baseURL: apiBaseUrl,
+    return $fetch('/secured/tasks/return', {
       method: 'PUT',
       body: {
         taskId
-      },
-      ...interceptors
+      }
     })
   }
 
@@ -68,16 +60,14 @@ export const useApi = () => {
     estimation: number,
     isReference?: boolean
   ) => {
-    return useFetch('/secured/tasks/estimate', {
+    return $fetch('/secured/tasks/estimate', {
       method: 'PUT',
       body: {
-        baseURL: apiBaseUrl,
         taskId,
         sprintId,
         estimation,
         isReference
-      },
-      ...interceptors
+      }
     })
   }
 
@@ -86,7 +76,7 @@ export const useApi = () => {
    * @return Promise<Sprint>
    */
   const getSprintsList = async () => {
-    return useFetch<Sprint[]>('/secured/sprints', { baseURL: apiBaseUrl, ...interceptors })
+    return $fetch<Sprint[]>('/secured/sprints')
   }
 
   return {

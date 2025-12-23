@@ -6,10 +6,10 @@ export const useSprintStore = defineStore('sprint', () => {
     try {
       if (sprints.value.length) return
 
-      const { data } = await getSprintsList()
+      const sprintsData = await getSprintsList()
 
-      if (data.value) {
-        sprints.value = data.value
+      if (sprintsData) {
+        sprints.value = sprintsData
       }
     } catch (e) {
       console.error('FAILED TO LOAD SPRINTS ', e)

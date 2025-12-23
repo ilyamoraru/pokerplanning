@@ -29,18 +29,17 @@ export const useAuth = () => {
       const { getUserByCode } = useApi()
 
       // Обмениваем code на userData с токеном
-      const { data: userData, error } = await getUserByCode(code)
-      if (error.value || !userData.value) {
-        throw new Error(error.value?.message || 'Не удалось получить пользователя от API')
-      }
+      const userData = await getUserByCode(code).catch((error) => {
+        throw new Error(error?.message || 'Не удалось получить пользователя от API')
+      })
 
-      if (!userData.value.token) {
+      if (!userData.token) {
         throw new Error('Токен не получен от API')
       }
 
-      setToken(userData.value.token)
+      setToken(userData.token)
 
-      return userData.value
+      return userData
     } catch (error) {
       console.error('Ошибка при обработке oauth callback: ', error)
       removeToken()

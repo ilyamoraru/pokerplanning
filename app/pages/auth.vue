@@ -52,9 +52,7 @@ const redirectToRedirectUrl = () => {
 const handleLogin = async () => {
   try {
     startAuth()
-    const { data, error } = await fetchUser()
-
-    if (error) {
+    const userData = await fetchUser().catch((error) => {
       console.warn('Failed to fetch user ', error)
       const oauthUrl = getSavedOAuthUrl()
       if (!oauthUrl) {
@@ -72,9 +70,9 @@ const handleLogin = async () => {
         .catch((error) => {
           throw new Error('Ошибка авторизации ', error)
         })
-    }
+    })
 
-    if (data.value) {
+    if (userData) {
       redirectToRedirectUrl()
     }
   } catch (error: any) {
