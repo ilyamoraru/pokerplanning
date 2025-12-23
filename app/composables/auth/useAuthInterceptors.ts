@@ -47,7 +47,7 @@ export const useAuthInterceptors = () => {
         const currentPath = window.location.pathname + window.location.search
 
         // redirect передаётся через query и сохраняется на всех этапах OAuth flow
-        await navigateTo(`/oauth/?redirect=${encodeURIComponent(currentPath)}`)
+        await navigateTo(`/auth/?redirect=${encodeURIComponent(currentPath)}`)
       }
     }
   }
