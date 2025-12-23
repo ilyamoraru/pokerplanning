@@ -13,6 +13,10 @@
 <script setup lang="ts">
 import { useOAuthWindow } from '~/composables/auth/useOAuthWindow'
 
+definePageMeta({
+  layout: 'oauth'
+})
+
 const route = useRoute()
 const { handleAuthCallback } = useAuth()
 const { isWindowOpened, notifySuccess, notifyError } = useOAuthWindow()

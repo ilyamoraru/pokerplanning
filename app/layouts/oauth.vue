@@ -1,5 +1,8 @@
 <template>
   <UContainer>
-    <slot />
+    <UiHeader oauth />
+    <UContainer>
+      <slot />
+    </UContainer>
   </UContainer>
 </template>
