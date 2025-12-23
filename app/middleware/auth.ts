@@ -4,6 +4,6 @@ export default defineNuxtRouteMiddleware(async (to) => {
   const { checkAndLoadUser } = useAuth()
 
   if (!(await checkAndLoadUser())) {
-    return navigateTo(`/oauth/?redirect=${encodeURIComponent(to.fullPath)}`)
+    return navigateTo(`/auth/?redirect=${encodeURIComponent(to.fullPath)}`)
   }
 })

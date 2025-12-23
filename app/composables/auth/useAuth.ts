@@ -16,7 +16,7 @@ export const useAuth = () => {
     userStore.logout()
 
     if (redirectToAuth) {
-      await router.push('/oauth')
+      await router.push('/auth')
     }
   }
 
