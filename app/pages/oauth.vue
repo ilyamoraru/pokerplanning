@@ -39,9 +39,15 @@ const startAuth = () => {
 }
 
 const redirectToRedirectUrl = () => {
-  const redirectUrl = route.query.redirect ? (route.query.redirect as string) : '/'
+  const redirect = route.query.code
 
-  router.push(redirectUrl)
+  if (redirect) {
+    router.push({
+      query: { code: redirect as string }
+    })
+  } else {
+    router.push('/')
+  }
 }
 
 const handleLogin = async () => {
@@ -49,7 +55,7 @@ const handleLogin = async () => {
     startAuth()
     const { data, error } = await fetchUser()
 
-    if (error.value) {
+    if (error) {
       console.warn('Failed to fetch user ', error)
       const oauthUrl = getSavedOAuthUrl()
       if (!oauthUrl) {
@@ -81,7 +87,7 @@ const handleLogin = async () => {
 
 const onYouTrackAuthCallback = async () => {
   const inPopupMode = isWindowOpened()
-  const code = route.params.code as string
+  const code = route.query.code as string
   if (!code) return
 
   loading.value = true

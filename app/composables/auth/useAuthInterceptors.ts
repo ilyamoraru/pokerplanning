@@ -36,10 +36,10 @@ export const useAuthInterceptors = () => {
           setOAuthUrl(responseData.redirectUrl)
         }
 
-        // Если мы уже на странице /auth, не делаем редирект
+        // Если мы уже на странице /oauth, не делаем редирект
         const currentPathname = window.location.pathname
 
-        if (currentPathname.startsWith('/auth')) {
+        if (currentPathname.startsWith('/oauth')) {
           return
         }
 
@@ -47,7 +47,7 @@ export const useAuthInterceptors = () => {
         const currentPath = window.location.pathname + window.location.search
 
         // redirect передаётся через query и сохраняется на всех этапах OAuth flow
-        await navigateTo(`/auth/?redirect=${encodeURIComponent(currentPath)}`)
+        await navigateTo(`/oauth/?redirect=${encodeURIComponent(currentPath)}`)
       }
     }
   }

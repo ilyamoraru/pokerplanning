@@ -16,7 +16,7 @@ export const useAuth = () => {
     userStore.logout()
 
     if (redirectToAuth) {
-      await router.push('/auth')
+      await router.push('/oauth')
     }
   }
 
@@ -42,7 +42,7 @@ export const useAuth = () => {
 
       return userData.value
     } catch (error) {
-      console.error('Ошибка при обработке auth callback: ', error)
+      console.error('Ошибка при обработке oauth callback: ', error)
       removeToken()
       return false
     }
