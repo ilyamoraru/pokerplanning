@@ -49,7 +49,7 @@ const handleLogin = async () => {
     startAuth()
     const { data, error } = await fetchUser()
 
-    if (error) {
+    if (error.value) {
       console.warn('Failed to fetch user ', error)
       const oauthUrl = getSavedOAuthUrl()
       if (!oauthUrl) {

@@ -30,7 +30,6 @@ export const useAuth = () => {
 
       // Обмениваем code на userData с токеном
       const { data: userData, error } = await getUserByCode(code)
-
       if (error.value || !userData.value) {
         throw new Error(error.value?.message || 'Не удалось получить пользователя от API')
       }

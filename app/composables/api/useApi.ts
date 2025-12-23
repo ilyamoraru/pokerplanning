@@ -12,7 +12,8 @@ export const useApi = () => {
    * @return AsyncData<User> - { id, token, name, avatar }
    */
   const getUserByCode = async (code: string) => {
-    return useFetch<User>(`/secured/users/${code}`, { baseURL: apiBaseUrl, ...interceptors })
+    const url = `/users/${code}`
+    return useFetch<User>(url, { baseURL: apiBaseUrl })
   }
 
   /**
