@@ -71,7 +71,8 @@ const handleLogin = async () => {
           redirectToRedirectUrl()
         })
         .catch((error) => {
-          throw new Error('Ошибка авторизации ', error)
+          error.value = error.message || 'Не удалось выполнить авторизацию'
+          window.location.href = oauthUrl
         })
     })
 
