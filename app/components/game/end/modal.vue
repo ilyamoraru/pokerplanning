@@ -1,14 +1,20 @@
 <template>
-  <UModal :open="true" :close="false" :dismissible="false">
-    <template #content>
+  <UModal
+    :open="true"
+    title="Завершение оценки"
+    :close="{ color: 'primary', variant: 'outline' }"
+    :dismissible="false"
+    @update:open="emit('close')"
+  >
+    <template #body>
       <div class="p-6">
-        <UiTitle severity="h2" class="text-center">Завершение оценки</UiTitle>
-        <div class="mt-10 flex flex-col gap-4">
+        <div class="flex flex-col gap-4">
           <UCheckbox v-model="isReference" label="Добавить задачу к эталонным" />
           <template v-if="sprints.length">
             <USelect
               v-model="selectedSprint"
               :items="sprints"
+              :loading="sprintsLoading"
               placeholder="Выберите спринт"
               label-key="name"
               value-key="id"
@@ -30,13 +36,17 @@
 </template>
 
 <script lang="ts" setup>
-defineProps<{
-  sprints: Sprint[]
+const props = defineProps<{
+  taskId: Task['id']
 }>()
 const emit = defineEmits<{
   (e: 'estimate', value: { sprintId: Sprint['id']; isReference: boolean }): void
+  (e: 'close'): void
 }>()
+const { sprints, sprintsLoading } = storeToRefs(useSprintStore())
+const { getSprints } = useSprintStore()
 
 const isReference = ref(false)
 const selectedSprint = ref<Sprint['id']>()
+onMounted(() => getSprints(props.taskId))
 </script>

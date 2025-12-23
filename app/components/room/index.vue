@@ -13,8 +13,9 @@
     />
     <GameEndModal
       v-if="gameIsEndingByUser"
-      :sprints
+      :task-id="task.id"
       @estimate="estimate($event.sprintId, $event.isReference)"
+      @close="onCurrentGamerResetGame"
     />
     <GameEndLoader v-else-if="gameIsEnding" class="bg-white fixed top-0 left-0 z-10 size-full" />
   </section>
@@ -26,7 +27,6 @@ import { useSocketEndGame } from '~/composables'
 
 const props = defineProps<{
   user: User
-  sprints: Sprint[]
   task: Task
 }>()
 const toast = useToast()
@@ -164,6 +164,7 @@ const resetCards = () => {
  */
 const onCurrentGamerResetGame = () => {
   resetCards()
+  resetGame()
   resetVote()
 }
 
@@ -171,7 +172,7 @@ const onCurrentGamerResetGame = () => {
  * кто то сбросил игру
  */
 const onResetGameByAnotherGamer = () => {
-  gameIsDone.value = false
+  resetGame()
   resetCards()
 }
 onMounted(() => {

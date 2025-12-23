@@ -75,8 +75,8 @@ export const useApi = () => {
    * получаем список спринтов
    * @return Promise<Sprint>
    */
-  const getSprintsList = async () => {
-    return $fetch<Sprint[]>('/secured/sprints')
+  const getSprintsList = async (taskId: Task['id']) => {
+    return $fetch<Sprint[]>(`/secured/sprints/${taskId}`)
   }
 
   return {

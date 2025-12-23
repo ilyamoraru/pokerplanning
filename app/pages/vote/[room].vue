@@ -8,13 +8,7 @@
         <UiTitle severity="h2" class="text-center mb-2">Подключаемся к комнате...</UiTitle>
         <UProgress :model-value="null" />
       </UContainer>
-      <Room
-        v-else
-        :user
-        :task="roomTask"
-        :sprints="sprints ?? []"
-        :room="route.params.room as string"
-      />
+      <Room v-else :user :task="roomTask" :room="route.params.room as string" />
     </UMain>
   </ClientOnly>
 </template>
@@ -25,7 +19,6 @@ definePageMeta({
   middleware: [
     'auth',
     'task',
-    'sprint',
     (to) => {
       const { getRoomTask } = useTaskStore()
       getRoomTask(to.params.room as string)
@@ -34,7 +27,6 @@ definePageMeta({
 })
 const { user } = storeToRefs(useUserStore())
 const { roomTask } = storeToRefs(useTaskStore())
-const { sprints } = storeToRefs(useSprintStore())
 const route = useRoute()
 
 const { isConnected, connectSocket, disconnectSocket } = useSocket()
