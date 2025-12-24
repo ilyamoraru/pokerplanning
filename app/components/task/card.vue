@@ -10,7 +10,7 @@
       :items="[{ label: 'Описание', content: value.description }]"
     >
       <template #body>
-        <div v-html="value.description" />
+        <div class="task-description" v-html="value.description" />
       </template>
     </UAccordion>
   </UCard>
@@ -21,3 +21,19 @@ defineProps<{
   value: Task
 }>()
 </script>
+
+<style scoped>
+.task-description :deep(ul) {
+  list-style: circle;
+  padding: 40px;
+}
+
+.task-description :deep(ol) {
+  list-style: decimal;
+  padding: 40px;
+}
+
+.task-description :deep(a) {
+  text-decoration: underline;
+}
+</style>
