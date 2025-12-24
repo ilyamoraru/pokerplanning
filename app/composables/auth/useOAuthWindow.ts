@@ -68,7 +68,7 @@ export const useOAuthWindow = () => {
         if (!windowOauth.closed) return
 
         clearInterval(checkClosed)
-        windowOauth.removeEventListener('message', handleMessage)
+        window.removeEventListener('message', handleMessage)
         reject(new Error('Окно авторизации было закрыто'))
       }, 500)
 
@@ -76,7 +76,7 @@ export const useOAuthWindow = () => {
        * удаляем слушатель событий и очищаем проверку ручного закрытия
        */
       const deleteListeners = () => {
-        windowOauth.removeEventListener('message', handleMessage)
+        window.removeEventListener('message', handleMessage)
         clearInterval(checkClosed)
       }
 
@@ -84,10 +84,10 @@ export const useOAuthWindow = () => {
        *  Слушаем сообщения от popup
        */
       const handleMessage = (event: MessageEvent) => {
-        if (event.origin !== windowOauth.location.origin) {
-          console.warn('Ignored message from different origin:', event.origin)
-          return
-        }
+        // if (event.origin !== windowOauth.location.origin) {
+        //   console.warn('Ignored message from different origin:', event.origin)
+        //   return
+        // }
         deleteListeners()
         closeWindow(windowOauth)
 
@@ -102,7 +102,7 @@ export const useOAuthWindow = () => {
         }
       }
 
-      windowOauth.addEventListener('message', handleMessage)
+      window.addEventListener('message', handleMessage)
     })
   }
 

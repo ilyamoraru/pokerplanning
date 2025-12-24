@@ -55,5 +55,5 @@ const onYouTrackAuthCallback = async () => {
   }
 }
 
-onMounted(() => setTimeout(onYouTrackAuthCallback))
+onMounted(onYouTrackAuthCallback)
 </script>
