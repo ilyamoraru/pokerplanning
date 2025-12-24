@@ -35,7 +35,7 @@ const { setToken } = useToken()
 const { setUser } = useUserStore()
 
 const loading = ref(false)
-const loadingUser = ref(true)
+const loadingUser = ref(false)
 const error = ref<string | null>(null)
 const startAuth = () => {
   loading.value = true
