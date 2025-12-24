@@ -4,11 +4,11 @@
       <div class="text-xl">Авторизация...</div>
       <div class="mt-2 text-gray-500">Пожалуйста, подождите</div>
     </div>
-    <div v-else-if="isAuthenticated && user" class="text-center">
+    <div v-else-if="user" class="text-center">
       <div class="text-2xl mb-4">
-        Бро, <span class="text-gray-500">{{ user.name }}</span>, ты залогинен
+        Коллежа, <span class="text-gray-500">{{ user.name }}</span>, ты залогинен
       </div>
-      <UButton class="px-6 py-3 transition" @click="router.push('/')"> Убегай к задачам </UButton>
+      <UButton class="px-6 py-3 transition" @click="navigateTo(`/`)"> Убегай к задачам </UButton>
     </div>
     <div v-else class="text-center">
       <div v-if="error" class="text-xl mb-4 text-red-500">{{ error }}</div>
@@ -34,11 +34,12 @@ definePageMeta({
 })
 const route = useRoute()
 const router = useRouter()
-const { fetchUser } = useApi()
 const { openOAuthWindow } = useOAuthWindow()
 const { clearOAuthUrl, oauthUrl } = useOAuthUrl()
-const { setToken } = useToken()
-const { setUser, user, isAuthenticated } = useUserStore()
+const { setToken, getToken } = useToken()
+const userStore = useUserStore()
+const { user } = storeToRefs(userStore)
+const { setUser, getUser } = userStore
 
 const loading = ref(false)
 const error = ref<string | null>(null)
@@ -95,7 +96,14 @@ const handleLogin = async () => {
   }
 }
 
-onMounted(() => {
-  fetchUser()
+onMounted(async () => {
+  loading.value = true
+  try {
+    await getUser()
+  } catch (err) {
+    console.error('Error fetching user:', err)
+  } finally {
+    loading.value = false
+  }
 })
 </script>
