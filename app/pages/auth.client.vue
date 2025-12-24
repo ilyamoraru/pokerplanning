@@ -8,6 +8,7 @@
       <div v-if="error" class="text-xl">{{ error }}</div>
       <div class="text-2xl mb-4">Требуется авторизация</div>
       <div class="text-gray-500 mb-6">Для продолжения работы необходимо авторизоваться</div>
+      {{ loadingUser }}
       <UButton
         :loading="loadingUser"
         :disabled="loadingUser"
