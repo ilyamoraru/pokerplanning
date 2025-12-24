@@ -71,19 +71,7 @@ const handleLogin = async () => {
           redirectToRedirectUrl()
         })
         .catch((error) => {
-          if (error.message.includes('Не удалось открыть popup окно')) {
-            window.location.href = oauthUrl
-            return
-          }
-
-          if (error.message.includes('Окно авторизации было закрыто')) {
-            error.value = 'Вы закрыли окно авторизации. Нажмите кнопку еще раз для повторной попытки.'
-            loading.value = false
-            return
-          }
-
-          error.value = error.message || 'Не удалось выполнить авторизацию'
-          loading.value = false
+          throw new Error('Ошибка авторизации ', error)
         })
     })
 
