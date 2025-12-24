@@ -27,6 +27,7 @@ export const useAuthInterceptors = () => {
       if (response.status === UNAUTHORIZED_STATUS) {
         const { removeToken } = useToken()
         const { setOAuthUrl } = useOAuthUrl()
+
         removeToken()
 
         // Сохраняем redirectUrl из тела ответа

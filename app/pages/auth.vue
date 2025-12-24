@@ -8,12 +8,14 @@
       <div v-if="error" class="text-xl">{{ error }}</div>
       <div class="text-2xl mb-4">Требуется авторизация</div>
       <div class="text-gray-500 mb-6">Для продолжения работы необходимо авторизоваться</div>
-      <button
-        class="px-6 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition"
+      <UButton
+        :loading="loadingUser"
+        :disabled="loadingUser"
+        class="px-6 py-3 transition"
         @click="handleLogin"
       >
         Авторизоваться через YouTrack
-      </button>
+      </UButton>
     </div>
   </div>
 </template>
@@ -28,16 +30,16 @@ const route = useRoute()
 const router = useRouter()
 const { fetchUser } = useApi()
 const { openOAuthWindow } = useOAuthWindow()
-const { getOAuthUrl: getSavedOAuthUrl, clearOAuthUrl } = useOAuthUrl()
+const { clearOAuthUrl, oauthUrl } = useOAuthUrl()
 const { setToken } = useToken()
 const { setUser } = useUserStore()
 
 const loading = ref(false)
+const loadingUser = ref(true)
 const error = ref<string | null>(null)
 const startAuth = () => {
   loading.value = true
   error.value = null
-  clearOAuthUrl()
 }
 
 const redirectToRedirectUrl = () => {
@@ -55,33 +57,44 @@ const redirectToRedirectUrl = () => {
 const handleLogin = async () => {
   try {
     startAuth()
-    const userData = await fetchUser().catch((error) => {
-      console.warn('Failed to fetch user ', error)
-      const oauthUrl = getSavedOAuthUrl()
-      if (!oauthUrl) {
-        throw new Error('Не удалось получить OAuth URL')
-      }
 
-      openOAuthWindow(oauthUrl)
-        .then((res: User) => {
-          const { token } = res
-          setToken(token)
-          setUser(res)
-          clearOAuthUrl()
-          redirectToRedirectUrl()
-        })
-        .catch((error) => {
-          throw new Error('Ошибка авторизации ', error)
-        })
-    })
-
-    if (userData) {
-      redirectToRedirectUrl()
+    console.warn('Failed to fetch user ', error)
+    console.log('oauthUrl', oauthUrl.value)
+    if (!oauthUrl.value) {
+      throw new Error('Не удалось получить OAuth URL')
     }
+
+    openOAuthWindow(oauthUrl.value)
+      .then((res: User) => {
+        const { token } = res
+        setToken(token)
+        setUser(res)
+        clearOAuthUrl()
+        redirectToRedirectUrl()
+      })
+      .catch((error) => {
+        if (error.message.includes('Окно авторизации было закрыто')) {
+          error.value = 'Вы закрыли окно авторизации. Нажмите кнопку еще раз для повторной попытки.'
+          loading.value = false
+          return
+        }
+
+        error.value = error.message || 'Не удалось выполнить авторизацию'
+        loading.value = false
+      })
   } catch (error: any) {
     throw new Error('Ошибка авторизации ', error)
   } finally {
     loading.value = false
   }
 }
+
+onMounted(async () => {
+  loadingUser.value = true
+  try {
+    await fetchUser()
+  } finally {
+    loadingUser.value = false
+  }
+})
 </script>
