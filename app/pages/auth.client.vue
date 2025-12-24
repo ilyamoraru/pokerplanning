@@ -95,6 +95,12 @@ onMounted(() => {
     try {
       loadingUser.value = true
       await fetchUser()
+        .then(() => {
+          loadingUser.value = false
+        })
+        .catch(() => {
+          loadingUser.value = false
+        })
     } finally {
       loadingUser.value = false
     }
