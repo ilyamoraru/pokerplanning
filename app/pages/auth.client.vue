@@ -4,8 +4,14 @@
       <div class="text-xl">Авторизация...</div>
       <div class="mt-2 text-gray-500">Пожалуйста, подождите</div>
     </div>
+    <div v-else-if="isAuthenticated && user" class="text-center">
+      <div class="text-2xl mb-4">
+        Бро, <span class="text-gray-500">{{ user.name }}</span>, ты залогинен
+      </div>
+      <UButton class="px-6 py-3 transition" @click="router.push('/')"> Убегай к задачам </UButton>
+    </div>
     <div v-else class="text-center">
-      <div v-if="error" class="text-xl">{{ error }}</div>
+      <div v-if="error" class="text-xl mb-4 text-red-500">{{ error }}</div>
       <div class="text-2xl mb-4">Требуется авторизация</div>
       <div class="text-gray-500 mb-6">Для продолжения работы необходимо авторизоваться</div>
       <UButton
@@ -32,7 +38,7 @@ const { fetchUser } = useApi()
 const { openOAuthWindow } = useOAuthWindow()
 const { clearOAuthUrl, oauthUrl } = useOAuthUrl()
 const { setToken } = useToken()
-const { setUser } = useUserStore()
+const { setUser, user, isAuthenticated } = useUserStore()
 
 const loading = ref(false)
 const error = ref<string | null>(null)
