@@ -88,15 +88,17 @@ export const useOAuthWindow = () => {
         //   console.warn('Ignored message from different origin:', event.origin)
         //   return
         // }
-        deleteListeners()
-        closeWindow(windowOauth)
 
         switch (event.data.type) {
           case 'oauth_success': {
+            deleteListeners()
+            closeWindow(windowOauth)
             return resolve(getUserFromMessage(event))
           }
 
           case 'oauth_error': {
+            deleteListeners()
+            closeWindow(windowOauth)
             return reject(new Error(event.data.error || 'Ошибка авторизации'))
           }
         }
