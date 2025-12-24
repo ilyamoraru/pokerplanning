@@ -9,8 +9,8 @@
       <div class="text-2xl mb-4">Требуется авторизация</div>
       <div class="text-gray-500 mb-6">Для продолжения работы необходимо авторизоваться</div>
       <UButton
-        :loading="loadingUser"
-        :disabled="loadingUser"
+        :loading="!oauthUrl"
+        :disabled="!oauthUrl"
         class="px-6 py-3 transition"
         @click="handleLogin"
       >
@@ -35,7 +35,6 @@ const { setToken } = useToken()
 const { setUser } = useUserStore()
 
 const loading = ref(false)
-const loadingUser = ref(false)
 const error = ref<string | null>(null)
 const startAuth = () => {
   loading.value = true
@@ -91,19 +90,6 @@ const handleLogin = async () => {
 }
 
 onMounted(() => {
-  setTimeout(async () => {
-    try {
-      loadingUser.value = true
-      await fetchUser()
-        .then(() => {
-          loadingUser.value = false
-        })
-        .catch(() => {
-          loadingUser.value = false
-        })
-    } finally {
-      loadingUser.value = false
-    }
-  })
+  fetchUser()
 })
 </script>
