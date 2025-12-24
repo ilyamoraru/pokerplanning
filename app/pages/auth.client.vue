@@ -89,12 +89,14 @@ const handleLogin = async () => {
   }
 }
 
-onMounted(async () => {
-  loadingUser.value = true
-  try {
-    await fetchUser()
-  } finally {
-    loadingUser.value = false
-  }
+onMounted(() => {
+  setTimeout(async () => {
+    try {
+      loadingUser.value = true
+      await fetchUser()
+    } finally {
+      loadingUser.value = false
+    }
+  })
 })
 </script>
