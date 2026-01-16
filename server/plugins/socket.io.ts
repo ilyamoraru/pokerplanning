@@ -77,7 +77,7 @@ export default defineNitroPlugin((nitroApp: NitroApp) => {
 
   const endGameMessage = (socket: Socket) => {
     socket.on(SocketMessage.endGame, (room: EndGameMessage) => {
-      io.to(room).emit(SocketMessage.endGame)
+      socket.broadcast.to(room).emit(SocketMessage.endGame)
     })
   }
 

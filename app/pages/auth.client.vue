@@ -6,7 +6,8 @@
     </div>
     <div v-else-if="user" class="text-center">
       <div class="text-2xl mb-4">
-        Коллежа, <span class="text-gray-500">{{ user.name }}</span>, ты залогинен
+        Коллежа, <span class="text-gray-500">{{ user.name }}</span
+        >, ты залогинен
       </div>
       <UButton class="px-6 py-3 transition" @click="navigateTo(`/`)"> Убегай к задачам </UButton>
     </div>

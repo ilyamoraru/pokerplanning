@@ -6,21 +6,11 @@
         Идет завершение оценки задачи. А пока можно посмотреть мультики!
       </UiTitle>
       <iframe
-        width="560"
-        height="315"
-        src="https://www.youtube.com/embed/r75dd3BBVco?si=MOzcoUA4o9X0-tPs"
-        title="YouTube video player"
+        src="https://vk.com/video_ext.php?oid=395805392&id=456243208&hash=e88cb06bffa1ea34&hd=3"
+        width="1280"
+        height="720"
+        allow="autoplay; encrypted-media; fullscreen; picture-in-picture; screen-wake-lock"
         frameborder="0"
-        allow="
-          accelerometer;
-          autoplay;
-          clipboard-write;
-          encrypted-media;
-          gyroscope;
-          picture-in-picture;
-          web-share;
-        "
-        referrerpolicy="strict-origin-when-cross-origin"
         allowfullscreen
       ></iframe>
     </UContainer>
