@@ -41,14 +41,18 @@
       </div>
       <div />
     </div>
-    <UContainer
-      class="fixed flex top-[var(--ui-header-height)] right-0 left-1/2 -translate-x-1/2 bg-white p-4"
+    <div
+      class="fixed max-w-(--ui-container) px-4 sm:px-6 lg:px-8 w-full flex top-(--ui-header-height) right-0 left-1/2 -translate-x-1/2 bg-white p-4"
     >
-      <UiTitle severity="h2" class="">{{ taskName }}</UiTitle>
+      <UiTitle severity="h2">
+        <a :href="taskUrl" target="_blank" class="hover:underline">
+          {{ taskName }} <Icon name="mdi:link-variant" size="16" />
+        </a>
+      </UiTitle>
       <UButton size="xl" color="warning" class="ml-auto" @click="emit('toAnalytics')">
         Отправить в аналитику
       </UButton>
-    </UContainer>
+    </div>
     <UContainer
       as="footer"
       class="border border-neutral-200 border-b-0 rounded-b-none rounded fixed bottom-0 left-0 left-1/2 -translate-x-1/2 bg-white p-4"
@@ -62,6 +66,7 @@
 <script lang="ts" setup>
 const props = defineProps<{
   taskName: Task['title']
+  taskUrl: Task['url']
   gamers: Gamer[]
   currentGamer: Gamer
   gameIsDone: boolean

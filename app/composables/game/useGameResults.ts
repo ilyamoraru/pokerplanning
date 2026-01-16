@@ -11,7 +11,7 @@ export const useGameResults = (gamers: Gamer[]) => {
   }
   const agreement = calculateAgreement(numericValues) * 100
   const average = calculateAverage(numericValues)
-  const result = Math.round(average)
+  const result = Math.ceil(average)
 
   // тут начинается неведомый мир нейросетей и лени в этом разибраться)
   /**

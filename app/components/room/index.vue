@@ -3,6 +3,7 @@
     <Game
       v-model:game-is-done="gameIsDone"
       :task-name="task.title"
+      :task-url="task.url"
       :gamers="roomGamers"
       :current-gamer="currentGamer"
       @vote="onCurrentGamerVote"

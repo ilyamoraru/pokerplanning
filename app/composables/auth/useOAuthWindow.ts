@@ -84,11 +84,6 @@ export const useOAuthWindow = () => {
        *  Слушаем сообщения от popup
        */
       const handleMessage = (event: MessageEvent) => {
-        // if (event.origin !== windowOauth.location.origin) {
-        //   console.warn('Ignored message from different origin:', event.origin)
-        //   return
-        // }
-
         switch (event.data.type) {
           case 'oauth_success': {
             deleteListeners()
