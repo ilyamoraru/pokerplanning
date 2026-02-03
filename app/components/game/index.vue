@@ -55,7 +55,7 @@
     </div>
     <UContainer
       as="footer"
-      class="border border-neutral-200 border-b-0 rounded-b-none rounded fixed bottom-0 left-0 left-1/2 -translate-x-1/2 bg-white p-4"
+      class="border border-neutral-200 border-b-0 rounded-b-none rounded fixed bottom-0 left-1/2 -translate-x-1/2 bg-white p-4"
     >
       <CardDesk v-if="!gameIsDone" :gamer-vote="currentGamer?.card" @vote="emit('vote', $event)" />
       <RoomResults v-else :gamers="allGamers" @save-estimate="emit('saveEstimate', $event)" />

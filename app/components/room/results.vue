@@ -9,7 +9,7 @@
       <UProgress :model-value="agreement" />
     </div>
     <div class="flex gap-2">
-      <UButton size="xl" @click="emit('saveEstimate', average)"> Сохранить оценку </UButton>
+      <UButton size="xl" @click="emit('saveEstimate', result)"> Сохранить оценку </UButton>
     </div>
   </UContainer>
 </template>
@@ -22,5 +22,5 @@ const emit = defineEmits<{
   (e: 'saveEstimate', value: number): void
 }>()
 
-const { average, agreement } = useGameResults(props.gamers)
+const { average, agreement, result } = useGameResults(props.gamers)
 </script>
