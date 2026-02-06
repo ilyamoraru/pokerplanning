@@ -1,7 +1,7 @@
 services:
   nuxt-app:
     container_name: app
-    image: ghcr.io/eugene-khorev/pokerplanning:latest
+    image: ghcr.io/ilyamoraru/pokerplanning:latest
     #    image: nuxt-docker
     #    build:
     #      context: .
